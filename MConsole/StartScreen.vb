@@ -1,0 +1,47 @@
+﻿Module StartScreen
+    Public c As String
+    Public synerr As String = " is not a command. Type help if you forget commands."
+    Sub Main()
+        Console.Title = "Welcome to MConsole..."
+        Console.Clear()
+        Console.WriteLine("-................................................-")
+        Console.WriteLine("-````````````````````````````````````````````````-")
+        Console.WriteLine("-````````````````````````````````````````````````-")
+        Console.WriteLine("-````````````````````````````````````````````````-")
+        Console.WriteLine("-````````````````````````````````````````````````-")
+        Console.WriteLine("-````````````````````````````````````````````````-")
+        Console.WriteLine("-````````````````-ooo/``````/ooo-````````````````-")
+        Console.WriteLine("-````````````````+ssss.````.ssss+````````````````-")
+        Console.WriteLine("-```````````````-sssss/````+sssss-```````````````-")
+        Console.WriteLine("-````````.:++```+ssssss.``.ssssss+```/+:.````````-")
+        Console.WriteLine("-`````-/osso/``-sssssss/``+sssssss-``:osso/-`````-")
+        Console.WriteLine("-`.:+ssso/-````+ssssssss.-ssssssss+````-/+sss+:.`-")
+        Console.WriteLine("-/sssso-``````-sssss:sss++ss++sssss-``````-ossss/-")
+        Console.WriteLine("-``-/osso/-.``+sssso`/ssssss.-sssss+```-/osso/-.`-")
+        Console.WriteLine("-`````.:+sss/-sssss-`.sssss/``+sssss-:sss+/-`````-")
+        Console.WriteLine("-````````.-/++ssss+```/ssss.``.sssss+/+:.````````-")
+        Console.WriteLine("-```````````-sssss-```.sss/````+sssss-```````````-")
+        Console.WriteLine("-```````````+ssss+`````/ss.````.sssss+```````````-")
+        Console.WriteLine("-``````````.ooooo-`````.+/``````/ooooo.``````````-")
+        Console.WriteLine("-````````````````````````````````````````````````-")
+        Console.WriteLine("-````````````````````````````````````````````````-")
+        Console.WriteLine("-````````````````````````````````````````````````-")
+        Console.WriteLine("-````````````````````````````````````````````````-")
+        Console.WriteLine("-````````````````````````````````````````````````-")
+        Console.WriteLine("-................................................-")
+        Console.WriteLine("MConsole v.0.3 Pre-alpha")
+        Console.WriteLine("A command console based on VB.net.")
+        Console.WriteLine("Copyright (c) 2018-2019 Martin C.")
+        Console.WriteLine("This Console is still in under construction.")
+        Threading.Thread.Sleep(2000)
+        Console.Clear()
+        MainTitle()
+    End Sub
+    Sub MainTitle()
+        Console.Title = "MConsole Pre-alpha"
+        Console.WriteLine("MConsole v.0.3 Pre-alpha")
+        Console.Write("Copyright (c) 2018-2019 Martin C.")
+        Threading.Thread.Sleep(500)
+        MainConsole()
+    End Sub
+End Module

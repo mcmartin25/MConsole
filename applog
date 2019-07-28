@@ -1,0 +1,66 @@
+Features
+* Add command: drives, alldrives,
+* Change fsinfo to dirlist
+-----
+Applog
+Version 0.1.20180120
+* First version of MConsole
+Version 0.1.20180121
+* Add command: app
+* Add features: AppConsole, Calc, Writer, Last Command Watcher, MPlayer
+Version 0.1.20180121.1
+* Small bug fixes
+* Add features: Clipboard Manager
+* Content-correcting
+Version 0.1.20180121.2(20180130)
+* Small bug fixes
+Version 0.1.20180121.3
+* Application icon added
+* Optimized: Calc
+Version 0.1.20180121.4(20180227)
+* Add features: echo, sysinfo
+Version 0.1.20180121.5(20180306)
+* Add testing features: martinui(console), debug
+Version 0.1.20180313
+* Add command: drives, alldrives,
+* Change fsinfo to dirlist
+Version 0.1.20180313.1(20180314)
+* Removed features: martinui(console), debug
+Version 0.1.20180313.2(20180325)
+! An update before Version 0.2
+* Add Start Screen
+* Code-correcting
+Version 0.2.20180325
+* Customized Start Screen
+* Change display method of ''Known Issues by last build'' from list to table
+* All the known issues list by last build are splitted from applog to issuelist.
+* Code-correcting
+* Content-correcting
+* Bug fixes
+* Add command: restart, issuelist
+Version 0.2.20180329
+* Code-correcting
+* Content-correcting
+* Removed features: Write, MPlayer
+Version 0.2.20180329.1(20180330)
+* Removed command: issuelist
+* Code-correcting
+* Removed features: appcm
+Version 0.2.20180420
+* Add features: Write, countdown
+* Add exit message
+* Code-correcting
+* Bug-fixes
+Version 0.2.20180420.1
+* Bug-fixes
+Version 0.2.20180510
+* System Bug-fixes
+* Bug-fixes for Calc, countdown and AppConsole
+Version 0.3.20190623
+* Remove AppConsole compoments
+* Code-correcting and bug-fixes
+* Content-correcting in Help Sub
+* Change copyright text
+-----
+Type issuelist to see all the known issues by last build.
+-----
