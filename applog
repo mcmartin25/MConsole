@@ -1,6 +1,9 @@
 Features
-* Add command: drives, alldrives,
-* Change fsinfo to dirlist
+* Optimized code
+* Add command: clear, open, run, commandview, cv, history
+* Fix unable to input command when uppercase
+* Add main app folder location(for development purpose)
+* Fix unable to input command when uppercase text included
 -----
 Applog
 Version 0.1.20180120
@@ -61,6 +64,12 @@ Version 0.3.20190623
 * Code-correcting and bug-fixes
 * Content-correcting in Help Sub
 * Change copyright text
+Version 0.4.20190806
+* Optimized code
+* Add command: clear, open, run, commandview, cv, history
+* Fix unable to input command when uppercase
+* Add main app folder location(for development purpose)
+* Fix unable to input command when uppercase text included
 -----
-Type issuelist to see all the known issues by last build.
+Type issuelist to see all the known issues by last build. (If provided)
 -----

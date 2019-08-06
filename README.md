@@ -8,6 +8,8 @@
 
  MConsole Pre-Alpha Version 0.4.20190806
 
+ *This project has been started a year ago, but I'm just uploaded it on my GitHub about few months ago.*
+
  Copyright (c) 2018-2019 Martin C. All rights reserved.
 
  [![GitHub license](https://img.shields.io/github/license/mcmartin25/MConsole.svg)](https://github.com/mcmartin25/MConsole/blob/master/LICENSE)
