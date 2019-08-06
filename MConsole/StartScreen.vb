@@ -1,6 +1,12 @@
 ﻿Module StartScreen
-    Public c As String
-    Public synerr As String = " is not a command. Type help if you forget commands."
+    Public c As String 'Command text variable
+    Public verstr As String = "0.4"
+    Public fullver As String = "0.4.20190804"
+    Public synerr As String = " is not a command. Type help if you forget commands." 'Syntax error message
+    Public d As Boolean
+    Dim commandlist As String() = {"***", "***", "***"}
+    Public commands As List(Of String) = New List(Of String)(commandlist)
+
     Sub Main()
         Console.Title = "Welcome to MConsole..."
         Console.Clear()
@@ -29,7 +35,7 @@
         Console.WriteLine("-````````````````````````````````````````````````-")
         Console.WriteLine("-````````````````````````````````````````````````-")
         Console.WriteLine("-................................................-")
-        Console.WriteLine("MConsole v.0.3 Pre-alpha")
+        Console.WriteLine("MConsole v." + verstr + " Pre-alpha")
         Console.WriteLine("A command console based on VB.net.")
         Console.WriteLine("Copyright (c) 2018-2019 Martin C.")
         Console.WriteLine("This Console is still in under construction.")
@@ -39,9 +45,10 @@
     End Sub
     Sub MainTitle()
         Console.Title = "MConsole Pre-alpha"
-        Console.WriteLine("MConsole v.0.3 Pre-alpha")
-        Console.Write("Copyright (c) 2018-2019 Martin C.")
+        Console.WriteLine("MConsole v." + verstr + " Pre-alpha")
+        Console.WriteLine("Copyright (c) 2018-2019 Martin C.")
         Threading.Thread.Sleep(500)
+        Console.WriteLine("Location: " + AppDomain.CurrentDomain.BaseDirectory)
         MainConsole()
     End Sub
 End Module

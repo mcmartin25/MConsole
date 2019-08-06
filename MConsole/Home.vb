@@ -1,25 +1,96 @@
-﻿Module Home
+﻿Imports System.IO
+
+Module Home
     Sub MainConsole()
+        Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory)
         Console.Write(vbCrLf + " " + vbCrLf + ">")
         c = Console.ReadLine()
-        Select Case c
+        If c.ToLower <> "cv" And c.ToLower <> "commandview" And c.ToLower <> "history" Then
+            commands.RemoveAt(2)
+            commands.Insert(0, c)
+        End If
+        Select Case c.ToLower
             Case "about"
-                about()
-            Case "applog"
-                applog()
-            Case "dir"
-                Dim d As String
-                Console.Write("Please type a directory" + vbCrLf + "Directory: ")
-                d = Console.ReadLine()
-                For Each Dir As String In IO.Directory.GetDirectories(d)
-                    Console.WriteLine(Dir)
-                Next
-                For Each DirFile As String In IO.Directory.EnumerateFiles(d)
-                    Console.WriteLine(DirFile)
+                About()
+            Case "alldrives", "alldrivesinfo", "driveslist", "drivelist"
+                Dim alldrive() As IO.DriveInfo = IO.DriveInfo.GetDrives()
+                Dim d As IO.DriveInfo
+                For Each d In alldrive
+                    Console.WriteLine("Drive {0}", d.Name)
+                    Console.WriteLine("Drive type: {0}", d.DriveType)
+                    If d.IsReady = True Then
+                        If Not d.VolumeLabel = "" Then
+                            Console.WriteLine("Volume Label {0}", d.VolumeLabel)
+                        Else
+                            Console.WriteLine("No Volume Label")
+                        End If
+                        Console.WriteLine("File System: {0}", d.DriveFormat)
+                        Console.WriteLine("Available Space: {0,15} bytes", d.AvailableFreeSpace)
+                        Console.WriteLine("Total Free Space: {0,15} bytes", d.TotalFreeSpace)
+                        Console.WriteLine("Total Size: {0,15} bytes", d.TotalSize)
+                    End If
                 Next
                 MainConsole()
-            Case "cls"
+            Case "applog"
+                Applog()
+            Case "calc"
+                Dim temp As String, c1 As Double, op As String, c2 As Double, last As Boolean
+                Console.WriteLine("Calculator")
+                'c1
+                temp = Console.ReadLine()
+                If IsNumeric(temp) Then
+                    c1 = temp
+                    temp = Nothing
+                Else
+                    Console.WriteLine("c1 Error")
+                    MainConsole()
+                End If
+                's
+                temp = Console.ReadLine()
+                If temp = "+" Or temp = "-" Or temp = "*" Or temp = "/" And temp.Count = 1 Then
+                    op = temp
+                    temp = Nothing
+                Else
+                    Console.WriteLine("s Error")
+                    MainConsole()
+                End If
+                'c2
+                temp = Console.ReadLine()
+                If IsNumeric(temp) Then
+                    c2 = temp
+                    temp = Nothing
+                Else
+                    Console.WriteLine("c2 Error")
+                    MainConsole()
+                End If
+                Console.Write("=")
+                If op = "+" Then
+                    Console.WriteLine(c1 + c2)
+                ElseIf op = "-" Then
+                    Console.WriteLine(c1 - c2)
+                ElseIf op = "*" Then
+                    Console.WriteLine(c1 * c2)
+                ElseIf op = "/" Then
+                    Console.WriteLine(c1 / c2)
+                End If
+
+                Console.WriteLine("")
+                MainConsole()
+
+            Case "cls", "clear"
                 Console.Clear()
+                MainConsole()
+            Case "currentfs", "fs", "filesystem", "fsinfo"
+                Dim alldrive() As IO.DriveInfo = IO.DriveInfo.GetDrives()
+                Dim d As IO.DriveInfo
+                For Each d In alldrive
+                    Console.WriteLine("Drive {0}", d.Name)
+                    If d.IsReady = True Then
+                        Console.WriteLine("File System: {0}", d.DriveFormat)
+                    End If
+                    Console.WriteLine("Drive type: {0}", d.DriveType)
+                Next
+                Console.WriteLine("Type allldrives to display detailed info.")
                 MainConsole()
             Case "copy"
                 Dim filetarget, copydir As String
@@ -43,13 +114,63 @@
                     Console.Write("Directory/folder already exists. Unable to copy.")
                 End If
                 MainConsole()
+            Case "cv", "commandview", "history"
+                CommandView()
             Case "date"
                 Console.WriteLine("Today's date: " + Date.Now.ToShortDateString)
                 Console.WriteLine("Time: " + Date.Now.ToLongTimeString)
                 MainConsole()
-            Case "time"
-                Console.WriteLine("Now Time: " + Date.Now.ToLongTimeString)
-                Console.WriteLine("Date: " + Date.Now.ToShortDateString)
+            Case "dir"
+                Dim d As String
+                Console.Write("Please type a directory" + vbCrLf + "Directory: ")
+                d = Console.ReadLine()
+                For Each Dir As String In IO.Directory.GetDirectories(d)
+                    Console.WriteLine(Dir)
+                Next
+                For Each DirFile As String In IO.Directory.EnumerateFiles(d)
+                    Console.WriteLine(DirFile)
+                Next
+                MainConsole()
+            Case "dirlist"
+                Dim d As String
+                Console.WriteLine("This displays all of the entries of file system you using.")
+                Console.WriteLine("Please type a directory")
+                Console.Write("Directory: ")
+                d = Console.ReadLine()
+                For Each Sentr As String In IO.Directory.EnumerateFileSystemEntries(d)
+                    Console.WriteLine(Sentr)
+                Next
+                MainConsole()
+            Case "drives", "drivepart", "dpart", "dp"
+                Dim drive = IO.DriveInfo.GetDrives
+                Console.WriteLine("Partition(s) you have")
+                For Each info In drive
+                    Console.WriteLine(info.Name)
+                Next
+                MainConsole()
+            Case "echo", "say", "shout"
+                Dim ec As String
+                Dim ecount, etime As Integer
+                If c = "echo" Then
+                    Console.Write("echo>")
+                    ec = Console.ReadLine()
+                ElseIf c = "say" Then
+                    Console.Write("say>")
+                    ec = Console.ReadLine()
+                ElseIf c = "shout" Then
+                    Console.Write("shout>")
+                    ec = Console.ReadLine()
+                End If
+                Console.Write("Display Time>")
+                etime = Console.ReadLine()
+                If Not ec = "" Then
+                    Do Until ecount = etime
+                        Console.WriteLine(ec)
+                        ecount += 1
+                    Loop
+                Else
+                    MainConsole()
+                End If
                 MainConsole()
             Case "exit"
                 Console.WriteLine("Do you want to exit? [Yes/No]")
@@ -63,19 +184,8 @@
                     Case Else
                         MainConsole()
                 End Select
-
-            Case "dirlist"
-                Dim d As String
-                Console.WriteLine("This displays all of the entries of file system you using.")
-                Console.WriteLine("Please type a directory")
-                Console.Write("Directory: ")
-                d = Console.ReadLine()
-                For Each Sentr As String In IO.Directory.EnumerateFileSystemEntries(d)
-                    Console.WriteLine(Sentr)
-                Next
-                MainConsole()
             Case "help"
-                help()
+                Help()
             Case "md", "makedir", "newdir"
                 Dim dirname As String
                 Console.Write("New folder directory/location and name: ")
@@ -109,6 +219,34 @@
                     Console.WriteLine("Directory/folder already exists. Unable to move.")
                 End If
                 MainConsole()
+            Case "open"
+                Console.Write("Folder directory/File location (except executable): ")
+                Dim target As String = Console.ReadLine()
+                Dim p() As Process = Process.GetProcessesByName(target)
+                Dim ext As String = IO.Path.GetExtension(target)
+                If p.Count > 0 Then
+                    Process.Start(target)
+                    MainConsole()
+                ElseIf target = String.Empty Then
+                    MainConsole()
+                ElseIf ext = ".cmd" Or
+                    ext = ".bin" Or
+                    ext = ".bat" Or
+                    ext = ".exe" Or
+                    ext = ".ex_" Or
+                    ext = ".ps1" Or
+                    ext = ".sct" Or
+                    ext = ".shb" Or
+                    ext = ".ws" Or
+                    ext = ".wsf" Or
+                    ext = ".ink" Then
+                    Console.WriteLine("Cannot run. Your file is an executable or may be a shortcut link to the an executable file.")
+                    Console.WriteLine("Please use run command instead.")
+                    MainConsole()
+                Else
+                    Console.WriteLine("Cannot run. Your folder directory/file location may not vaild.")
+                    MainConsole()
+                End If
             Case "rename", "ren", "rn"
                 Dim filetarget, renamev As String
                 Console.Write("Target file: ")
@@ -118,32 +256,51 @@
                 My.Computer.FileSystem.RenameFile(filetarget, renamev)
                 Console.WriteLine("Please go to file directory to see the rename results.")
                 MainConsole()
-            Case "ver", "version"
-                ver()
-            Case "echo", "say", "shout"
-                Dim ec As String
-                Dim ecount, etime As Integer
-                If c = "echo" Then
-                    Console.Write("echo>")
-                    ec = Console.ReadLine()
-                ElseIf c = "say" Then
-                    Console.Write("say>")
-                    ec = Console.ReadLine()
-                ElseIf c = "shout" Then
-                    Console.Write("shout>")
-                    ec = Console.ReadLine()
-                End If
-                Console.Write("Display Time>")
-                etime = Console.ReadLine()
-                If Not ec = "" Then
-                    Do Until ecount = etime
-                        Console.WriteLine(ec)
-                        ecount += 1
-                    Loop
+            Case "restart", "rs"
+                Threading.Thread.Sleep(2000)
+                Console.Clear()
+                Threading.Thread.Sleep(1000)
+                Main()
+            Case "run"
+                Console.WriteLine("Be aware that this action may harm your computer because not all application are safe!")
+                Console.Write("Run: ")
+                Dim target As String = Console.ReadLine()
+                Dim p() As Process = Process.GetProcessesByName(target)
+                Dim ext As String = IO.Path.GetExtension(target)
+                If p.Count > 0 Then
+                    Process.Start(target)
+                    MainConsole()
+                ElseIf target = String.Empty Then
+                    MainConsole()
                 Else
+                    Console.Write("Cannot run. Your folder directory/file location may not vaild.")
                     MainConsole()
                 End If
-                MainConsole()
+            Case "set", "setting", "settings"
+                Console.WriteLine("Settings")
+                c = Console.ReadLine()
+                Select Case c.ToLower
+                    Case "dev", "devmode"
+                        Console.WriteLine("This mode will give some unfinished functions for developers to test. Use at your own risk.")
+                        Console.WriteLine("Development mode")
+                        c = Console.ReadLine()
+                        Select Case c.ToLower
+                            Case "start", "open", "enable", "yes", "y"
+                                If d = False Then
+                                    d = True
+                                Else
+                                    Console.WriteLine("Development mode has already been enabled.")
+                                End If
+                            Case "stop", "close", "disable", "no", "n"
+                                If d = True Then
+                                    d = False
+                                Else
+                                    Console.WriteLine("Development mode has already been disabled.")
+                                End If
+                        End Select
+                    Case "back", "exit"
+                        MainConsole()
+                End Select
             Case "sysinfo", "systeminfo"
                 Console.WriteLine("System info")
                 Dim osname As String = My.Computer.Info.OSFullName
@@ -213,49 +370,13 @@
                 Else
                     MainConsole()
                 End If
-            Case "currentfs", "fs", "filesystem", "fsinfo"
-                Dim alldrive() As IO.DriveInfo = IO.DriveInfo.GetDrives()
-                Dim d As IO.DriveInfo
-                For Each d In alldrive
-                    Console.WriteLine("Drive {0}", d.Name)
-                    If d.IsReady = True Then
-                        Console.WriteLine("File System: {0}", d.DriveFormat)
-                    End If
-                    Console.WriteLine("Drive type: {0}", d.DriveType)
-                Next
-                Console.WriteLine("Type allldrives to display detailed info.")
+
+            Case "time"
+                Console.WriteLine("Time Now: " + Date.Now.ToLongTimeString)
+                Console.WriteLine("Date: " + Date.Now.ToShortDateString)
                 MainConsole()
-            Case "alldrives", "alldrivesinfo", "driveslist", "drivelist"
-                Dim alldrive() As IO.DriveInfo = IO.DriveInfo.GetDrives()
-                Dim d As IO.DriveInfo
-                For Each d In alldrive
-                    Console.WriteLine("Drive {0}", d.Name)
-                    Console.WriteLine("Drive type: {0}", d.DriveType)
-                    If d.IsReady = True Then
-                        If Not d.VolumeLabel = "" Then
-                            Console.WriteLine("Volume Label {0}", d.VolumeLabel)
-                        Else
-                            Console.WriteLine("No Volume Label")
-                        End If
-                        Console.WriteLine("File System: {0}", d.DriveFormat)
-                        Console.WriteLine("Available Space: {0,15} bytes", d.AvailableFreeSpace)
-                        Console.WriteLine("Total Free Space: {0,15} bytes", d.TotalFreeSpace)
-                        Console.WriteLine("Total Size: {0,15} bytes", d.TotalSize)
-                    End If
-                Next
-                MainConsole()
-            Case "drives", "drivepart", "dpart", "dp"
-                Dim drive = IO.DriveInfo.GetDrives
-                Console.WriteLine("Partition(s) you have")
-                For Each info In drive
-                    Console.WriteLine(info.Name)
-                Next
-                MainConsole()
-            Case "restart", "rs"
-                Threading.Thread.Sleep(2000)
-                Console.Clear()
-                Threading.Thread.Sleep(1000)
-                Main()
+            Case "ver", "version"
+                Ver()
             Case Else
                 Console.WriteLine(c + synerr)
                 Threading.Thread.Sleep(500)

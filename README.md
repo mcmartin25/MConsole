@@ -1,4 +1,4 @@
-# MConsole v.0.3 Pre-alpha
+# MConsole v.0.4 Pre-alpha
  
  ![MConsole logo](https://github.com/mcmartin25/MConsole/blob/master/image/icon_s.png)
  
@@ -6,12 +6,12 @@
  
  Under Construction 
 
- MConsole Pre-Alpha Version 0.3.20190623
+ MConsole Pre-Alpha Version 0.4.20190806
 
  Copyright (c) 2018-2019 Martin C. All rights reserved.
 
  [![GitHub license](https://img.shields.io/github/license/mcmartin25/MConsole.svg)](https://github.com/mcmartin25/MConsole/blob/master/LICENSE)
- ![Version](https://img.shields.io/badge/Version-0.3.20190623-orange.svg)
+ ![Version](https://img.shields.io/badge/Version-0.4.20190806-orange.svg)
 
 ## Documentation
  
