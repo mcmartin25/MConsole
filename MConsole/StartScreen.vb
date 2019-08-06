@@ -1,7 +1,7 @@
 ﻿Module StartScreen
     Public c As String 'Command text variable
     Public verstr As String = "0.4"
-    Public fullver As String = "0.4.20190804"
+    Public fullver As String = "0.4.20190806"
     Public synerr As String = " is not a command. Type help if you forget commands." 'Syntax error message
     Public d As Boolean
     Dim commandlist As String() = {"***", "***", "***"}
