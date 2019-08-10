@@ -67,9 +67,12 @@ Version 0.3.20190623
 Version 0.4.20190806
 * Optimized code
 * Add command: clear, open, run, commandview, cv, history
-* Fix unable to input command when uppercase
 * Add main app folder location(for development purpose)
-* Fix unable to input command when uppercase text included
+* Bug-fixes
+Version 0.4.20190811
+* Add command: where, list, renamedir, rendir, rndir
+* Optimized: calc, alldrivesinfo, dir
+* Code-correcting and bug-fixes
 -----
 Type issuelist to see all the known issues by last build. (If provided)
 -----

@@ -1,11 +1,12 @@
 ﻿Module StartScreen
     Public c As String 'Command text variable
     Public verstr As String = "0.4"
-    Public fullver As String = "0.4.20190806"
+    Public fullver As String = "0.4.20190811"
     Public synerr As String = " is not a command. Type help if you forget commands." 'Syntax error message
     Public d As Boolean
     Dim commandlist As String() = {"***", "***", "***"}
     Public commands As List(Of String) = New List(Of String)(commandlist)
+    Public currentdir As String = AppDomain.CurrentDomain.BaseDirectory
 
     Sub Main()
         Console.Title = "Welcome to MConsole..."
@@ -35,7 +36,7 @@
         Console.WriteLine("-````````````````````````````````````````````````-")
         Console.WriteLine("-````````````````````````````````````````````````-")
         Console.WriteLine("-................................................-")
-        Console.WriteLine("MConsole v." + verstr + " Pre-alpha")
+        Console.WriteLine("MConsole v.{0} Pre-alpha", verstr)
         Console.WriteLine("A command console based on VB.net.")
         Console.WriteLine("Copyright (c) 2018-2019 Martin C.")
         Console.WriteLine("This Console is still in under construction.")
@@ -45,10 +46,10 @@
     End Sub
     Sub MainTitle()
         Console.Title = "MConsole Pre-alpha"
-        Console.WriteLine("MConsole v." + verstr + " Pre-alpha")
+        Console.WriteLine("MConsole v.{0} Pre-alpha", verstr)
         Console.WriteLine("Copyright (c) 2018-2019 Martin C.")
         Threading.Thread.Sleep(500)
-        Console.WriteLine("Location: " + AppDomain.CurrentDomain.BaseDirectory)
+        Console.WriteLine("Location: {0}", currentdir)
         MainConsole()
     End Sub
 End Module
