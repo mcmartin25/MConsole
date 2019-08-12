@@ -73,6 +73,9 @@ Version 0.4.20190811
 * Add command: where, list, renamedir, rendir, rndir
 * Optimized: calc, alldrivesinfo, dir
 * Code-correcting and bug-fixes
+Version 0.4.20190812
+* Add options in settings: display commandview, directory location
+* Optimized: restart
 -----
 Type issuelist to see all the known issues by last build. (If provided)
 -----

@@ -141,6 +141,9 @@
         Console.WriteLine("* Add command: where, list, renamedir, rendir, rndir")
         Console.WriteLine("* Optimized: calc, alldrivesinfo, dir")
         Console.WriteLine("* Code-correcting and bug-fixes")
+        Console.WriteLine("Version 0.4.20190812")
+        Console.WriteLine("* Add options in settings: display commandview, directory location")
+        Console.WriteLine("* Optimized: restart")
         'Console.WriteLine("-----")
         'Console.WriteLine("Type issuelist to see all the known issues by last build.")
         'Console.WriteLine("-----")
@@ -154,11 +157,16 @@
     End Sub
 
     Sub CommandView()
-        Console.WriteLine("For security reasons, olny the newest 3 commands (sub-commands included) will be list here.")
-        Console.WriteLine("")
-        For Each item In commands
-            Console.WriteLine(item)
-        Next
-        MainConsole()
+        If My.Settings.recCommand = True Then
+            Console.WriteLine("For security reasons, olny the newest 3 commands (sub-commands included) will be list here.")
+            Console.WriteLine("")
+            For Each item In commands
+                Console.WriteLine(item)
+            Next
+            MainConsole()
+        Else
+            Console.WriteLine("You disabled commandview/history function, please enable it.")
+            MainConsole()
+        End If
     End Sub
 End Module

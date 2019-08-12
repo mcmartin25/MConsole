@@ -6,7 +6,7 @@ Module Home
         Console.WriteLine()
         Console.Write(">")
         c = Console.ReadLine()
-        If c.ToLower <> "cv" And c.ToLower <> "commandview" And c.ToLower <> "history" Then
+        If My.Settings.recCommand = True And c.ToLower <> "cv" And c.ToLower <> "commandview" And c.ToLower <> "history" Then
             commands.RemoveAt(2)
             commands.Insert(0, c)
         End If
@@ -40,17 +40,7 @@ Module Home
             Case "echo", "say", "shout"
                 EchoText()
             Case "exit"
-                Console.WriteLine("Do you want to exit? [Yes/No]")
-                Dim decide As String
-                decide = Console.ReadLine()
-                Select Case decide
-                    Case "yes", "y"
-                        Environment.Exit(0)
-                    Case "no", "n"
-                        MainConsole()
-                    Case Else
-                        MainConsole()
-                End Select
+                ExitMsg()
             Case "help"
                 Help()
             Case "md", "makedir", "newdir"
@@ -66,10 +56,7 @@ Module Home
             Case "renamedir", "rendir", "rndir"
                 Renamedir()
             Case "restart", "rs"
-                Threading.Thread.Sleep(2000)
-                Console.Clear()
-                Threading.Thread.Sleep(1000)
-                Main()
+                RestartApp(False)
             Case "run"
                 Run()
             Case "set", "setting", "settings"
@@ -291,6 +278,20 @@ Module Home
         MainConsole()
     End Sub
 
+    Sub ExitMsg()
+        Console.WriteLine("Do you want to exit? [Yes/No]")
+        Dim decide As String
+        decide = Console.ReadLine()
+        Select Case decide
+            Case "yes", "y"
+                Environment.Exit(0)
+            Case "no", "n"
+                MainConsole()
+            Case Else
+                MainConsole()
+        End Select
+    End Sub
+
     Sub Fsinfo()
         Dim alldrive() As IO.DriveInfo = IO.DriveInfo.GetDrives()
         Dim d As IO.DriveInfo
@@ -438,6 +439,29 @@ Module Home
 
     End Sub
 
+    Sub RestartApp(ByVal msg As Boolean)
+        If msg = True Then
+            Console.WriteLine("You need to restart MConsole to take the effect, restart now? Press n to abort...")
+            Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod().ToString)
+            c = Console.ReadLine()
+            Select Case c.ToLower
+                Case "n", "no"
+                    Console.WriteLine("Returning back...")
+                    Exit Sub
+                Case Else
+                    Threading.Thread.Sleep(2000)
+                    Console.Clear()
+                    Threading.Thread.Sleep(1000)
+                    Main()
+            End Select
+        Else
+            Threading.Thread.Sleep(2000)
+            Console.Clear()
+            Threading.Thread.Sleep(1000)
+            Main()
+        End If
+    End Sub
+
     Sub Rename()
         Dim filetarget, rv As String
         Console.Write("Target file: {0}", currentdir)
@@ -496,24 +520,62 @@ Module Home
                 Console.WriteLine("This mode will give some unfinished functions for developers to test. Use at your own risk.")
                 c = Console.ReadLine()
                 Select Case c.ToLower
-                    Case "start", "open", "enable", "yes", "y"
-                        If d = False Then
-                            d = True
-                            Console.WriteLine("Saved.")
-                            Settings()
-                        Else
-                            Console.WriteLine("Development mode has already been enabled.")
-                            Settings()
-                        End If
-                    Case "stop", "close", "disable", "no", "n"
-                        If d = True Then
-                            d = False
-                            Console.WriteLine("Saved.")
-                            Settings()
-                        Else
-                            Console.WriteLine("Development mode has already been disabled.")
-                            Settings()
-                        End If
+                    Case "start", "open", "enable", "yes", "y", "on"
+                        My.Settings.DevMode = True
+                        Console.WriteLine("Saved.")
+                        Settings()
+                    Case "stop", "close", "disable", "no", "n", "off"
+                        My.Settings.DevMode = False
+                        Console.WriteLine("Saved.")
+                        Settings()
+                    Case Else
+                        Settings()
+                End Select
+            Case "display"
+                c = Console.ReadLine()
+                Select Case c.ToLower
+                    Case "location"
+                        Console.WriteLine("This will open/close your current directory display when startup.")
+                        c = Console.ReadLine()
+                        Select Case c.ToLower
+                            Case "start", "open", "enable", "yes", "y", "on"
+                                My.Settings.ssLocationDisp = True
+                                Console.WriteLine("Current directory will display when startup.")
+                            Case "stop", "close", "disable", "no", "n", "off"
+                                My.Settings.ssLocationDisp = False
+                                Console.WriteLine("Current directory will not display when startup.")
+                            Case Else
+                                Settings()
+                        End Select
+                        Console.WriteLine("You need to restart MConsole to apply the effect, restart now? Press n to abort...")
+                        c = Console.ReadLine()
+                        Select Case c.ToLower
+                            Case "n", "no"
+                                Settings()
+                            Case Else
+                                RestartApp(True)
+                        End Select
+                    Case Else
+                        Settings()
+                End Select
+            Case "privacy"
+                c = Console.ReadLine()
+                Select Case c.ToLower
+                    Case "commandview", "history"
+                        Console.WriteLine("This will start/stop record your commands history.")
+                        c = Console.ReadLine()
+                        Select Case c.ToLower
+                            Case "start", "open", "enable", "yes", "y", "on"
+                                My.Settings.recCommand = True
+                                Console.WriteLine("Saved.")
+                                Settings()
+                            Case "stop", "close", "disable", "no", "n", "off"
+                                My.Settings.recCommand = False
+                                Console.WriteLine("Saved.")
+                                Settings()
+                            Case Else
+                                Settings()
+                        End Select
                     Case Else
                         Settings()
                 End Select
@@ -523,6 +585,19 @@ Module Home
                 Console.WriteLine("devmode            Enable/Disable Development mode.")
                 Console.WriteLine("help               Show commands.")
                 Console.WriteLine("back               Back to main screen.")
+                Console.WriteLine("display            Open diaplay settings.")
+                Console.WriteLine("privacy            Open privacy settings.")
+                Console.WriteLine()
+                Console.WriteLine("Display settings")
+                Console.WriteLine("Command            Description")
+                Console.WriteLine("------------------------------")
+                Console.WriteLine("location           Enable/Disable currect directory display when startup.")
+                Console.WriteLine()
+                Console.WriteLine("Privacy settings")
+                Console.WriteLine("Command            Description")
+                Console.WriteLine("------------------------------")
+                Console.WriteLine("commandview        Enable/Disable record commands history.")
+                Console.WriteLine("history            Same as commandview.")
                 Console.WriteLine()
                 Settings()
             Case "back", "exit"
