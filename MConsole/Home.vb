@@ -42,7 +42,7 @@ Module Home
             Case "exit"
                 ExitMsg()
             Case "help"
-                Help()
+                Info.Help()
             Case "md", "makedir", "newdir"
                 Makedir()
             Case "move"
@@ -71,6 +71,8 @@ Module Home
                 Ver()
             Case "where"
                 WhereAmI()
+            Case "who"
+                WhoAmI()
             Case Else
                 If c <> String.Empty Then
                     Console.WriteLine(c + synerr)
@@ -512,102 +514,6 @@ Module Home
         End If
     End Sub
 
-    Sub Settings()
-        c = Console.ReadLine()
-        Select Case c.ToLower
-            Case "dev", "devmode"
-                Console.WriteLine("Development mode")
-                Console.WriteLine("This mode will give some unfinished functions for developers to test. Use at your own risk.")
-                c = Console.ReadLine()
-                Select Case c.ToLower
-                    Case "start", "open", "enable", "yes", "y", "on"
-                        My.Settings.DevMode = True
-                        Console.WriteLine("Saved.")
-                        Settings()
-                    Case "stop", "close", "disable", "no", "n", "off"
-                        My.Settings.DevMode = False
-                        Console.WriteLine("Saved.")
-                        Settings()
-                    Case Else
-                        Settings()
-                End Select
-            Case "display"
-                c = Console.ReadLine()
-                Select Case c.ToLower
-                    Case "location"
-                        Console.WriteLine("This will open/close your current directory display when startup.")
-                        c = Console.ReadLine()
-                        Select Case c.ToLower
-                            Case "start", "open", "enable", "yes", "y", "on"
-                                My.Settings.ssLocationDisp = True
-                                Console.WriteLine("Current directory will display when startup.")
-                            Case "stop", "close", "disable", "no", "n", "off"
-                                My.Settings.ssLocationDisp = False
-                                Console.WriteLine("Current directory will not display when startup.")
-                            Case Else
-                                Settings()
-                        End Select
-                        Console.WriteLine("You need to restart MConsole to apply the effect, restart now? Press n to abort...")
-                        c = Console.ReadLine()
-                        Select Case c.ToLower
-                            Case "n", "no"
-                                Settings()
-                            Case Else
-                                RestartApp(True)
-                        End Select
-                    Case Else
-                        Settings()
-                End Select
-            Case "privacy"
-                c = Console.ReadLine()
-                Select Case c.ToLower
-                    Case "commandview", "history"
-                        Console.WriteLine("This will start/stop record your commands history.")
-                        c = Console.ReadLine()
-                        Select Case c.ToLower
-                            Case "start", "open", "enable", "yes", "y", "on"
-                                My.Settings.recCommand = True
-                                Console.WriteLine("Saved.")
-                                Settings()
-                            Case "stop", "close", "disable", "no", "n", "off"
-                                My.Settings.recCommand = False
-                                Console.WriteLine("Saved.")
-                                Settings()
-                            Case Else
-                                Settings()
-                        End Select
-                    Case Else
-                        Settings()
-                End Select
-            Case "help"
-                Console.WriteLine("Command            Description")
-                Console.WriteLine("------------------------------")
-                Console.WriteLine("devmode            Enable/Disable Development mode.")
-                Console.WriteLine("help               Show commands.")
-                Console.WriteLine("back               Back to main screen.")
-                Console.WriteLine("display            Open diaplay settings.")
-                Console.WriteLine("privacy            Open privacy settings.")
-                Console.WriteLine()
-                Console.WriteLine("Display settings")
-                Console.WriteLine("Command            Description")
-                Console.WriteLine("------------------------------")
-                Console.WriteLine("location           Enable/Disable currect directory display when startup.")
-                Console.WriteLine()
-                Console.WriteLine("Privacy settings")
-                Console.WriteLine("Command            Description")
-                Console.WriteLine("------------------------------")
-                Console.WriteLine("commandview        Enable/Disable record commands history.")
-                Console.WriteLine("history            Same as commandview.")
-                Console.WriteLine()
-                Settings()
-            Case "back", "exit"
-                Console.WriteLine("Turning back to main screen...")
-                MainConsole()
-            Case Else
-                Settings()
-        End Select
-    End Sub
-
     Sub Systeminfo()
         Console.WriteLine("System info")
         Dim osname As String = My.Computer.Info.OSFullName
@@ -681,6 +587,15 @@ Module Home
 
     Sub WhereAmI()
         Console.WriteLine("You are now in the directory/folder {0}.", currentdir)
+        MainConsole()
+    End Sub
+
+    Sub WhoAmI()
+        If Not String.IsNullOrWhiteSpace(My.Settings.username) Then
+            Console.WriteLine(My.Settings.username)
+        Else
+            Console.WriteLine("You hid your username by default. Go to the settings and change it.")
+        End If
         MainConsole()
     End Sub
 End Module

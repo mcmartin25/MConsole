@@ -54,6 +54,29 @@
         If My.Settings.ssLocationDisp = True Then
             Console.WriteLine("Location: {0}", currentdir)
         End If
+
+        If My.Settings.setusername = False Then
+            Dim temp As String
+            Console.WriteLine("")
+            Console.WriteLine("Hi there, welcome to MConsole")
+            Console.WriteLine("Your name is {0}, Right?", Environment.UserName)
+            Console.WriteLine("If this name's right then press enter once, or type other name you want to display in this console.")
+            Console.WriteLine("Type ""none"" if you want to hide your username in MConsole this time.")
+            c = Console.ReadLine()
+            temp = c
+            Select Case c.ToLower
+                Case "none"
+                    My.Settings.username = ""
+                    My.Settings.setusername = False
+                Case String.Empty, " " 'String.IsNullOrWhiteSpace(c)
+                    My.Settings.username = Environment.UserName
+                    My.Settings.setusername = True
+                Case Else
+                    My.Settings.username = temp
+                    My.Settings.setusername = True
+            End Select
+        End If
+
         MainConsole()
     End Sub
 End Module

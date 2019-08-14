@@ -108,6 +108,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Settings.vb" />
+    <Compile Include="SettingsConsole.vb" />
     <Compile Include="StartScreen.vb" />
   </ItemGroup>
   <ItemGroup>
