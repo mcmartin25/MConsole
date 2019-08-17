@@ -1,5 +1,8 @@
 ﻿Module SettingsConsole
     Sub Settings()
+        Console.WriteLine("Settings")
+        Console.WriteLine("Type help if you need commands in every settings.")
+        Console.Write(">")
         c = Console.ReadLine()
         Select Case c.ToLower
             Case "dev", "devmode"

@@ -86,9 +86,9 @@ Module Home
                 Catch ex As Exception
                     If (TypeOf Err.GetException() Is DivideByZeroException) Then
                         Console.WriteLine("An error appeared in MConsole. Console progress is terminated. Restarting the console...")
-                        Debug.Write("MConsole progress is terminated, due to entered invaild connand '")
+                        Debug.Write("MConsole progress is terminated, due to entered invaild connand """)
                         Debug.Write(c)
-                        Debug.WriteLine("'. Now we are restarting the console... Error code: System.DivideByZeroException")
+                        Debug.WriteLine(""". Now we are restarting the console... Error code: System.DivideByZeroException")
                         Threading.Thread.Sleep(2000)
                         Console.Clear()
                         Threading.Thread.Sleep(1000)

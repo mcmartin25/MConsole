@@ -103,7 +103,7 @@
         Console.WriteLine("* Code-correcting")
         Console.WriteLine("Version 0.2.20180325")
         Console.WriteLine("* Customized Start Screen")
-        Console.WriteLine("* Change display method of ''Known Issues by last build'' from list to table")
+        Console.WriteLine("* Change display method of ""Known Issues by last build"" from list to table")
         Console.WriteLine("* All the known issues list by last build are splitted from applog to issuelist.")
         Console.WriteLine("* Code-correcting")
         Console.WriteLine("* Content-correcting")
