@@ -76,12 +76,6 @@ Version 0.4.20190811
 Version 0.4.20190812
 * Add options in settings: display commandview, directory location
 * Optimized: restart
-Version 0.4.20190818
-* Add username function
-* Add who command
-* Optimized: settings
-* Optimized code
-* content-changing and bug-fixes
 -----
 Type issuelist to see all the known issues by last build. (If provided)
 -----
