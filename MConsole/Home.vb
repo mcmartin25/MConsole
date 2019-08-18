@@ -98,48 +98,6 @@ Module Home
         End Select
     End Sub
 
-    Sub Drivesinfo()
-        Dim alldrive() As DriveInfo = DriveInfo.GetDrives()
-        'Dim listnum As Integer = 0
-        Console.WriteLine("Type any available (logical) drives name (not label)")
-        Console.WriteLine("These are all your available (logical) drive(s) you can check.")
-        Console.WriteLine("***")
-        For Each d As DriveInfo In alldrive
-            Console.WriteLine(d.Name)
-            'listnum += 1
-        Next
-        Console.WriteLine("***")
-        c = Console.ReadLine()
-        Select Case c.ToLower
-            Case "exit", "back"
-                MainConsole()
-            Case Else
-                Try
-                    Dim driveName As String = c
-                    Dim drive As New DriveInfo(driveName)
-
-                    If drive.IsReady = True Then
-                        Console.WriteLine("This drive is ready.")
-                        Console.WriteLine("Drive Name: {0}", drive.Name)
-                        Console.WriteLine("Volume Label: {0}", drive.VolumeLabel)
-                        Console.WriteLine("Drive Type: {0}", drive.DriveType.ToString())
-                        Console.WriteLine("Drive Format: {0}", drive.DriveFormat)
-                        Console.WriteLine("Total Size: {0} GB", drive.TotalSize / 1024 / 1024 / 1024)
-                        Console.WriteLine("Free Disk Space: {0} GB", (drive.TotalFreeSpace / 1024 / 1024 / 1024))
-                    Else
-                        Console.WriteLine("This drive isn't ready yet, or it doesn't exist. Please make sure this drive is already plugged in.")
-                    End If
-                    'Throw New ArgumentException()
-                Catch ex As Exception
-                    'If (TypeOf Err.GetException() Is ArgumentException) Then
-                    Console.WriteLine("You typed an invalid drive name. Turning back to main screen...")
-                    MainConsole()
-                    'End If
-                End Try
-                MainConsole()
-        End Select
-    End Sub
-
     Sub Calc()
         Dim temp As String
         Dim arraytemp() As String
@@ -206,6 +164,22 @@ Module Home
         Calc()
     End Sub
 
+    Sub ChangeDir()
+        Dim newdir As String
+        Console.WriteLine("The current directory is {0}.", currentdir)
+        Console.Write("Folder directory/location: ")
+        newdir = Console.ReadLine()
+        If (System.IO.Directory.Exists(newdir)) Then
+            currentdir = newdir
+            Console.Write("Current directory changed to {0}.", currentdir)
+        ElseIf newdir = String.Empty Then
+            MainConsole()
+        Else
+            Console.Write("Directory/folder {0} does not exist. Unable to change current directory.", newdir)
+        End If
+        MainConsole()
+    End Sub
+
     Sub Copy()
         Dim filetarget, copydir As String
         Console.Write("Target file: {0}", currentdir)
@@ -239,30 +213,15 @@ Module Home
         End If
         MainConsole()
     End Sub
-    Sub ChangeDir()
-        Dim newdir As String
-        Console.WriteLine("The current directory is {0}.", currentdir)
-        Console.Write("Folder directory/location: ")
-        newdir = Console.ReadLine()
-        If (System.IO.Directory.Exists(newdir)) Then
-            currentdir = newdir
-            Console.Write("Current directory changed to {0}.", currentdir)
-        ElseIf newdir = String.Empty Then
-            MainConsole()
-        Else
-            Console.Write("Directory/folder {0} does not exist. Unable to change current directory.", newdir)
-        End If
-        MainConsole()
-    End Sub
 
-    Sub Datetimedisp(ByVal mode as String)
+    Sub Datetimedisp(ByVal mode As String)
         If mode = "d" Then
             Console.WriteLine("Today's date: " + Date.Now.ToShortDateString)
             Console.WriteLine("Time: " + Date.Now.ToLongTimeString)
-        Else if mode = "t"
+        ElseIf mode = "t" Then
             Console.WriteLine("Time Now: " + Date.Now.ToLongTimeString)
             Console.WriteLine("Date: " + Date.Now.ToShortDateString)
-        End if
+        End If
         MainConsole()
     End Sub
 
@@ -276,6 +235,81 @@ Module Home
             For Each DirFile As String In Directory.EnumerateFiles(currentdir)
                 Console.WriteLine(DirFile)
             Next
+        End If
+        MainConsole()
+    End Sub
+
+    Sub DrivePart()
+        Dim drive = IO.DriveInfo.GetDrives
+        Console.WriteLine("Partition(s) you have")
+        For Each info In drive
+            Console.WriteLine(info.Name)
+        Next
+        MainConsole()
+    End Sub
+
+    Sub Drivesinfo()
+        Dim alldrive() As DriveInfo = DriveInfo.GetDrives()
+        'Dim listnum As Integer = 0
+        Console.WriteLine("Type any available (logical) drives name (not label)")
+        Console.WriteLine("These are all your available (logical) drive(s) you can check.")
+        Console.WriteLine("***")
+        For Each d As DriveInfo In alldrive
+            Console.WriteLine(d.Name)
+            'listnum += 1
+        Next
+        Console.WriteLine("***")
+        c = Console.ReadLine()
+        Select Case c.ToLower
+            Case "exit", "back"
+                MainConsole()
+            Case Else
+                Try
+                    Dim driveName As String = c
+                    Dim drive As New DriveInfo(driveName)
+
+                    If drive.IsReady = True Then
+                        Console.WriteLine("This drive is ready.")
+                        Console.WriteLine("Drive Name: {0}", drive.Name)
+                        Console.WriteLine("Volume Label: {0}", drive.VolumeLabel)
+                        Console.WriteLine("Drive Type: {0}", drive.DriveType.ToString())
+                        Console.WriteLine("Drive Format: {0}", drive.DriveFormat)
+                        Console.WriteLine("Total Size: {0} GB", drive.TotalSize / 1024 / 1024 / 1024)
+                        Console.WriteLine("Free Disk Space: {0} GB", (drive.TotalFreeSpace / 1024 / 1024 / 1024))
+                    Else
+                        Console.WriteLine("This drive isn't ready yet, or it doesn't exist. Please make sure this drive is already plugged in.")
+                    End If
+                    'Throw New ArgumentException()
+                Catch ex As Exception
+                    'If (TypeOf Err.GetException() Is ArgumentException) Then
+                    Console.WriteLine("You typed an invalid drive name. Turning back to main screen...")
+                    MainConsole()
+                    'End If
+                End Try
+                MainConsole()
+        End Select
+    End Sub
+
+    Sub EchoText()
+        Dim ec As String
+        Dim ecount, etime As Integer
+        If c = "echo" Then
+            Console.Write("echo>")
+        ElseIf c = "say" Then
+            Console.Write("say>")
+        ElseIf c = "shout" Then
+            Console.Write("shout>")
+        End If
+        ec = Console.ReadLine()
+        Console.Write("Display Time>")
+        etime = Console.ReadLine()
+        If Not ec = String.Empty Or etime = String.Empty Then
+            Do Until ecount = etime
+                Console.WriteLine(ec)
+                ecount += 1
+            Loop
+        Else
+            MainConsole()
         End If
         MainConsole()
     End Sub
@@ -320,43 +354,6 @@ Module Home
         MainConsole()
     End Sub
 
-    Sub DrivePart()
-        Dim drive = IO.DriveInfo.GetDrives
-        Console.WriteLine("Partition(s) you have")
-        For Each info In drive
-            Console.WriteLine(info.Name)
-        Next
-        MainConsole()
-    End Sub
-
-    Sub EchoText()
-        Dim ec As String
-        Dim ecount, etime As Integer
-        If c = "echo" Then
-            Console.Write("echo>")
-        ElseIf c = "say" Then
-            Console.Write("say>")
-        ElseIf c = "shout" Then
-            Console.Write("shout>")
-        End If
-        ec = Console.ReadLine()
-        Console.Write("Display Time>")
-        etime = Console.ReadLine()
-        If Not ec = String.Empty Or etime = String.Empty Then
-            Do Until ecount = etime
-                Console.WriteLine(ec)
-                ecount += 1
-            Loop
-        Else
-            MainConsole()
-        End If
-        MainConsole()
-    End Sub
-
-    Sub MakeFile()
-
-    End Sub
-
     Sub Makedir()
         Dim dirname As String
         Console.Write("New folder directory/location and name: {0}", currentdir)
@@ -370,6 +367,10 @@ Module Home
             Console.WriteLine("Directory/folder {0} exists. Unable to create.", dirname)
         End If
         MainConsole()
+    End Sub
+
+    Sub MakeFile()
+
     End Sub
 
     Sub Move()
@@ -441,29 +442,6 @@ Module Home
 
     End Sub
 
-    Sub RestartApp(ByVal msg As Boolean)
-        If msg = True Then
-            Console.WriteLine("You need to restart MConsole to take the effect, restart now? Press n to abort...")
-            Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod().ToString)
-            c = Console.ReadLine()
-            Select Case c.ToLower
-                Case "n", "no"
-                    Console.WriteLine("Returning back...")
-                    Exit Sub
-                Case Else
-                    Threading.Thread.Sleep(2000)
-                    Console.Clear()
-                    Threading.Thread.Sleep(1000)
-                    Main()
-            End Select
-        Else
-            Threading.Thread.Sleep(2000)
-            Console.Clear()
-            Threading.Thread.Sleep(1000)
-            Main()
-        End If
-    End Sub
-
     Sub Rename()
         Dim filetarget, rv As String
         Console.Write("Target file: {0}", currentdir)
@@ -495,6 +473,29 @@ Module Home
             Console.WriteLine("Directory/folder with name {0} already exists. Unable to rename.", rv)
         End If
         MainConsole()
+    End Sub
+
+    Sub RestartApp(ByVal msg As Boolean)
+        If msg = True Then
+            Console.WriteLine("You need to restart MConsole to take the effect, restart now? Press n to abort...")
+            Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod().ToString)
+            c = Console.ReadLine()
+            Select Case c.ToLower
+                Case "n", "no"
+                    Console.WriteLine("Returning back...")
+                    Exit Sub
+                Case Else
+                    Threading.Thread.Sleep(2000)
+                    Console.Clear()
+                    Threading.Thread.Sleep(1000)
+                    Main()
+            End Select
+        Else
+            Threading.Thread.Sleep(2000)
+            Console.Clear()
+            Threading.Thread.Sleep(1000)
+            Main()
+        End If
     End Sub
 
     Sub Run()

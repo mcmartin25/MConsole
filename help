@@ -6,22 +6,27 @@ about              Display MConsole info.
 alldrives          Display file system for each partition.
 alldrivesinfo      Same as alldrives.
 applog             Display features and logs of MConsole.
-cls                Clear screen.
+calc               Calculate with simple operators.
+cd                 Change current directory/folder.
+changedir          Same as cd.
+chgdir             Same as cd.
 clear              Clear screen.
+cls                Clear screen.
 commandview        Show typed command history. (Up to 3 command)
-cv                 Same as commandview.
 copy               Copy file.
 copydir            Copy directory.
 currentfs          Same as alldrives.
+cv                 Same as commandview.
 date               Display date.
 dir                Display current directory and its contents.
 dirlist            Same as dir.
-driveinfo          Same as alldrives.
-drivepart          Same as drives.
-drivelist          Same as alldriveinfo.
-driveslist         Same as alldriveinfo.
-dpart              Same as drives.
 dp                 Same as drives.
+dpart              Same as drives.
+driveinfo          Same as alldrives.
+drivelist          Same as alldriveinfo.
+drivepart          Same as drives.
+drives             Show all partition(s) you have on your disk(s).
+driveslist         Same as alldriveinfo.
 echo               Display copy messages what you type.
 exit               Exit MConsole.
 filesystem         Same as alldrives.
@@ -30,15 +35,15 @@ fsinfo             Same as alldrives.
 help               Display all the commands.
 history            Same as commandview.
 list               Same as dir.
-md                 Make a new directory.
 makedir            Same as md.
+md                 Make a new directory.
 move               Move file to new directory.
 movedir            Move directory to new directory/location.
 newdir             Same as md.
 open               Open file or folder. (This cannot run executable.)
+ren                Same as rename.
 rename             Rename file.
 renamedir          Rename folder.
-ren                Same as rename.
 rendir             Same as renamedir.
 restart            Restart the console. (That wouldn't restart your computer.)
 rn                 Same as rename.
@@ -46,6 +51,9 @@ rndir              Same as renamedir.
 rs                 Same as restart.
 run                Run executable, open file or folder.
 say                Same as echo.
+set                Same as settings.
+setting            Same as settings.
+settings           Open settings.
 shout              Same as echo.
 sysinfo            Show your host system you using.
 systeminfo         Same as sysinfo.
@@ -53,3 +61,4 @@ time               Display time.
 ver                Display version of MConsole.
 version            Same as ver.
 where              Show current directory location.
+who                Show your current username value.
