@@ -25,7 +25,8 @@
 
     Sub SetDevMode()
         Console.WriteLine("Development mode")
-        Console.WriteLine("This mode will give some unfinished functions for developers to test. Use at your own risk.")
+        Console.WriteLine("This mode will give some unfinished functions for developers to test. Use at your own risk. [On/Off]")
+        Console.Write("devmode>")
         c = Console.ReadLine()
         Select Case c.ToLower
             Case "start", "open", "enable", "yes", "y", "on"
@@ -42,10 +43,12 @@
     End Sub
 
     Sub SetDisplay()
+        Console.Write("display>")
         c = Console.ReadLine()
         Select Case c.ToLower
             Case "location"
-                Console.WriteLine("This will open/close your current directory display when startup.")
+                Console.WriteLine("This will open/close your current directory display when startup. [On/Off]")
+                Console.Write("location>")
                 c = Console.ReadLine()
                 Select Case c.ToLower
                     Case "start", "open", "enable", "yes", "y", "on"
@@ -78,10 +81,12 @@
     End Sub
 
     Sub SetPrivacy()
+        Console.Write("privacy>")
         c = Console.ReadLine()
         Select Case c.ToLower
             Case "commandview", "history"
-                Console.WriteLine("This will start/stop record your commands history.")
+                Console.WriteLine("This will start/stop record your commands history. [On/Off]")
+                Console.Write("commandview>")
                 c = Console.ReadLine()
                 Select Case c.ToLower
                     Case "start", "open", "enable", "yes", "y", "on"
@@ -115,9 +120,9 @@
             Console.WriteLine("Your current name is {0}.", My.Settings.username)
             Console.WriteLine("If this name's right then press enter once, or type other name you want to display in this console.")
         Else
-
             Console.WriteLine("You hid your username by default.")
             Console.WriteLine("Please type a name you want to display in this console.")
+            Console.WriteLine("If you leave the input empty, then your system username will be the default here.")
         End If
         Console.WriteLine("Type ""none"" if you want to hide your username in MConsole this time.")
         Console.WriteLine("Or else, type ""exit"" to discard your changes.")
