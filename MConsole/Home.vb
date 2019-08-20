@@ -1,4 +1,6 @@
 ﻿Imports System.IO
+Imports System.Net
+Imports System.Net.NetworkInformation
 
 Module Home
     Sub MainConsole()
@@ -49,8 +51,19 @@ Module Home
                 Move()
             Case "movedir"
                 Movedir()
+            Case "network"
+                Dim mode As ConsoleKeyInfo
+                Console.WriteLine("Detailed or summary? [d/s]")
+                mode = Console.ReadKey
+                If mode.Key = ConsoleKey.D Then
+                    NetworkInfo(True)
+                ElseIf mode.key = ConsoleKey.s Then
+                    NetworkInfo(False)
+                End If
             Case "open"
                 Open()
+            Case "ping"
+                Ping()
             Case "rename", "ren", "rn"
                 Rename()
             Case "renamedir", "rendir", "rndir"
@@ -60,9 +73,7 @@ Module Home
             Case "run"
                 Run()
             Case "set", "setting", "settings"
-                Console.WriteLine("Settings")
-                Console.WriteLine("Type help if need commands.")
-                Settings()
+                Settings(True)
             Case "sysinfo", "systeminfo"
                 Systeminfo()
             Case "time"
@@ -315,13 +326,13 @@ Module Home
     End Sub
 
     Sub ExitMsg()
-        Console.WriteLine("Do you want to exit? [Yes/No]")
-        Dim decide As String
-        decide = Console.ReadLine()
-        Select Case decide
-            Case "yes", "y"
+        Console.WriteLine("Do you want to exit? [Y/N]")
+        Dim decide As ConsoleKeyInfo
+        decide = Console.ReadKey()
+        Select Case decide.Key
+            Case ConsoleKey.Y
                 Environment.Exit(0)
-            Case "no", "n"
+            Case ConsoleKey.N
                 MainConsole()
             Case Else
                 MainConsole()
@@ -407,6 +418,258 @@ Module Home
         MainConsole()
     End Sub
 
+    Sub NetworkInfo(ByVal detailed As Boolean)
+        Dim computerprop As IPGlobalProperties = IPGlobalProperties.GetIPGlobalProperties()
+        Dim ipstat As IPGlobalStatistics = computerprop.GetIPv4GlobalStatistics
+        Console.WriteLine()
+        Console.WriteLine("This computer: {0}", My.Computer.Name)
+        Console.WriteLine("This computer host name on network: {0}", computerprop.HostName)
+        Console.WriteLine(computerprop.DomainName)
+        If My.Computer.Network.IsAvailable Then
+            Console.WriteLine("Your network is available.")
+            'Console.WriteLine("DNS host name: {0}", System.Net.Dns.GetHostName)
+            'Console.WriteLine("Network: {0}")
+
+            Dim ipv4s As String = Dns.GetHostEntry(Dns.GetHostName).AddressList(0).MapToIPv4.ToString()
+            Dim ipv4s2 As String = Dns.GetHostEntry(Dns.GetHostName()).AddressList.Where(Function(a As IPAddress) Not a.IsIPv6LinkLocal AndAlso Not a.IsIPv6Multicast AndAlso Not a.IsIPv6SiteLocal).First().ToString()
+
+            Dim ipv6s As String = Dns.GetHostEntry(Dns.GetHostName).AddressList(0).ToString()
+
+            Console.WriteLine("IPv4: {0} or {1}", ipv4s, ipv4s2)
+
+            Console.WriteLine("IPv6: {0}", ipv6s)
+
+            Console.WriteLine()
+
+            If detailed Then
+
+                Dim nics As NetworkInterface() = NetworkInterface.GetAllNetworkInterfaces
+                If nics.Length < 0 Or nics Is Nothing Then
+                    Console.WriteLine("No NICS")
+                    Exit Sub
+                End If
+
+                For Each netadapter As NetworkInterface In nics
+                    Dim intproperties As IPInterfaceProperties = netadapter.GetIPProperties()
+                    Console.WriteLine(netadapter.Name)
+                    Console.WriteLine(netadapter.Description)
+
+                    Select Case netadapter.NetworkInterfaceType
+                        Case 48
+                            Console.WriteLine("")
+                            Console.WriteLine("")
+                            Console.WriteLine("")
+                            Console.WriteLine("")
+                            Console.WriteLine("")
+                            Console.WriteLine("")
+                            Console.WriteLine(" ______________")
+                            Console.WriteLine("|\_____________\")
+                            Console.WriteLine("\|___o__o__o___|")
+                        Case 20, 21, 63
+                            Console.WriteLine("   ____")
+                            Console.WriteLine("/||    |```````|")
+                            Console.WriteLine("|||    |```````|")
+                            Console.WriteLine("|||    | o o o |")
+                            Console.WriteLine("|||    | o o o |")
+                            Console.WriteLine("|||    | o o o |")
+                            Console.WriteLine("|||____| o o o |")
+                            Console.WriteLine("||/____/_______|")
+                            Console.WriteLine("|/____________/")
+                        Case 71
+                            Console.WriteLine("")
+                            Console.WriteLine("")
+                            Console.WriteLine("   ||   )))")
+                            Console.WriteLine("   ||")
+                            Console.WriteLine("   ||")
+                            Console.WriteLine("   ||")
+                            Console.WriteLine(" __||__________")
+                            Console.WriteLine("|\_____________\")
+                            Console.WriteLine("\|_____________|")
+                        Case 144
+                            Console.WriteLine("  ____________")
+                            Console.WriteLine(" |\_______|````|")
+                            Console.WriteLine(" |||``````|-  -|")
+                            Console.WriteLine(" |||      |____|")
+                            Console.WriteLine(" |||_______|  |")
+                            Console.WriteLine(" \|________|  |")
+                            Console.WriteLine("|\____\|__||  |\")
+                            Console.WriteLine("||         |  ||")
+                            Console.WriteLine("\|_________|  ||")
+                        Case 6, 26, 69, 62, 117
+                            Console.WriteLine("  ____________")
+                            Console.WriteLine(" |\_______|`||`|")
+                            Console.WriteLine(" |||``````| || |")
+                            Console.WriteLine(" |||      |____|")
+                            Console.WriteLine(" |||_______|  |")
+                            Console.WriteLine(" \|________|  |")
+                            Console.WriteLine("|\____\|__||  |\")
+                            Console.WriteLine("||         |  ||")
+                            Console.WriteLine("\|_________|  ||")
+                        Case 237, 243, 244
+                            Console.WriteLine("  ____________")
+                            Console.WriteLine(" |\___________\")
+                            Console.WriteLine(" |||`````````||")
+                            Console.WriteLine(" |||         ||")
+                            Console.WriteLine(" |||  ((( o )))")
+                            Console.WriteLine(" |||     / \ ||")
+                            Console.WriteLine(" |||    /   \||")
+                            Console.WriteLine(" |||___/     \|")
+                            Console.WriteLine(" \|___/_______\")
+                        Case Else
+                            Console.WriteLine("  ____________")
+                            Console.WriteLine(" |\___________\")
+                            Console.WriteLine(" |||`````````||")
+                            Console.WriteLine(" |||         ||")
+                            Console.WriteLine(" |||_________||")
+                            Console.WriteLine(" \|___________|")
+                            Console.WriteLine("|\____\|__|____\")
+                            Console.WriteLine("||          oo |")
+                            Console.WriteLine("\|_____________|")
+                    End Select
+
+                    Select Case netadapter.NetworkInterfaceType
+                    'Some connection type may outdated/discontinued, 
+                    'but may have some possibility reasons that why still support them, 
+                    'that's why I put the full list from Microsoft website to here.
+                        Case 94
+                            Console.WriteLine("Asymmetric Digital Subscriber Line (ADSL)")
+                        Case 37
+                            Console.WriteLine("Asynchronous Transfer Mode (ATM)")
+                        Case 20
+                            Console.WriteLine("Basic rate interface Integrated Services Digital Network (ISDN)")
+                        Case 6
+                            Console.WriteLine("Ethernet (with IEEE standard 802.3)")
+                        Case 26
+                            Console.WriteLine("Ethernet 3 megabit/second connection (with IETF RFC 895 standard)")
+                        Case 69
+                            Console.WriteLine("Fast Ethernet connection with optical fiber (100Base-FX)")
+                        Case 62
+                            Console.WriteLine("Fast Ethernet connection over twisted pair (100Base-T)")
+                        Case 15
+                            Console.WriteLine("Fiber Distributed Data Interface (FDDI)")
+                        Case 48
+                            Console.WriteLine("Generic modem")
+                        Case 117
+                            Console.WriteLine("Gigabit Ethernet Connection")
+                        Case 144
+                            Console.WriteLine("High Performance Serial Bus")
+                        Case 114
+                            Console.WriteLine("Internet Protocol (IP) with Asynchronous Transfer Mode (ATM) combined")
+                        Case 63
+                            Console.WriteLine("Integrated Services Digital Network (ISDN)")
+                        Case 24
+                            Console.WriteLine("Loopback adapter")
+                        Case 143
+                            Console.WriteLine("Multirate Digital Subscriber Line")
+                        Case 23
+                            Console.WriteLine("Point-To-Point protocol (PPP)")
+                        Case 21
+                            Console.WriteLine("Primary rate interface Integrated Services Digital Network (ISDN)")
+                        Case 95
+                            Console.WriteLine("Rate Adaptive Digital Subscriber Line (RADSL)")
+                        Case 28
+                            Console.WriteLine("Serial Line Internet Protocol (SLIP) (with IETF RFC 1055 standard)")
+                        Case 96
+                            Console.WriteLine("Symmetric Digital Subscriber Line (SDSL)")
+                        Case 9
+                            Console.WriteLine("Token-Ring connection (with IEEE standard 802.5 standard)")
+                        Case 131
+                            Console.WriteLine("Tunnel connection")
+                        Case 1
+                            Console.WriteLine("Unknown interface")
+                        Case 97
+                            Console.WriteLine("Very High Data Rate Digital Subscriber Line (VDSL)")
+                        Case 71
+                            Console.WriteLine("Wireless LAN connection (with IEEE 802.11 standard)")
+                        Case 237
+                            Console.WriteLine("Mobile broadband interface for WiMax devices")
+                        Case 243
+                            Console.WriteLine("Mobile broadband interface for GSM-based devices")
+                        Case 244
+                            Console.WriteLine("Mobile broadband interface for CDMA-based devices")
+                    End Select
+
+                    Console.WriteLine("Adapter ID {0}", netadapter.Id)
+                    If String.IsNullOrWhiteSpace(netadapter.GetPhysicalAddress.ToString) Then
+                        Console.WriteLine("This adapter doesn't have a MAC address or unable to provide.")
+                    Else
+                        Console.WriteLine("This adapter's MAC address is {0}", netadapter.GetPhysicalAddress)
+                    End If
+
+                    'Console.WriteLine(netadapter.IsReceiveOnly)
+                    Select Case netadapter.IsReceiveOnly
+                        Case True
+                            Console.WriteLine("This is a receive-only adapter.")
+                        Case False
+                            Console.WriteLine("This is not a receive-only adapter.")
+                    End Select
+
+
+                    Select Case netadapter.OperationalStatus.ToString
+                        Case "Dormant"
+                            Console.WriteLine("Not transmit yet, waiting for events")
+                        Case "Down"
+                            Console.WriteLine("Unable to transmit data")
+                        Case "LowerLayerDown"
+                            Console.WriteLine("Unable to transmit data due to runs on top of others")
+                        Case "NotPresent"
+                            Console.WriteLine("Not Present")
+                        Case "Testing"
+                            Console.WriteLine("Testing")
+                        Case "Unknown"
+                            Console.WriteLine("Unknown status")
+                        Case "Up"
+                            Console.WriteLine("Able to transmit data")
+                    End Select
+                    'Console.WriteLine("{0}", netadapter.OperationalStatus)
+
+                    Select Case netadapter.OperationalStatus.ToString
+                        Case "Down", "NotPresent"
+                        Case Else
+                            Select Case netadapter.Speed / 1024
+                                Case Is < 100
+                                    Console.WriteLine("Speed: {0} kbps", netadapter.Speed / 1000)
+                                Case Is < 1000000
+                                    Console.WriteLine("Speed: {0} Mbps", netadapter.Speed / 1000000)
+                                Case Is < 10000000
+                                    Console.WriteLine("Speed: {0} Gbps", netadapter.Speed / 1000000000)
+                                Case Else
+                                    Console.WriteLine("Speed: {0} bps", netadapter.Speed)
+                            End Select
+                    End Select
+
+
+                    Select Case netadapter.SupportsMulticast
+                        Case True
+                            Console.WriteLine("This adapter supports multicast.")
+                        Case False
+                            Console.WriteLine("This adapter doesn't support multicast.")
+                    End Select
+
+                    Console.WriteLine()
+
+                Next
+            End If
+
+            Console.WriteLine("Inbound Packet Data:")
+            Console.WriteLine("  ____________")
+            Console.WriteLine(" |\___________\   <= Received: ")
+            Console.WriteLine(" |||`````````||      {0}", ipstat.ReceivedPackets.ToString)
+            Console.WriteLine(" |||         ||   => Delivered: ")
+            Console.WriteLine(" |||_________||      {0}", ipstat.ReceivedPacketsDelivered.ToString)
+            Console.WriteLine(" \|___________|    x Discarded:")
+            Console.WriteLine("|\____\|__|____\     {0}", ipstat.ReceivedPacketsDiscarded.ToString)
+            Console.WriteLine("||          oo | <=> Forwarded:")
+            Console.WriteLine("\|_____________|     {0}", ipstat.ReceivedPacketsForwarded.ToString)
+
+            Console.WriteLine()
+
+        Else
+            Console.WriteLine("Your network is unavailable.")
+        End If
+        MainConsole()
+    End Sub
+
     Sub Open()
         Console.Write("Folder directory/File name (except executable): {0}", currentdir)
         Dim target As String = Console.ReadLine()
@@ -440,6 +703,32 @@ Module Home
 
     Sub Opendir() 'Simliar as open(dir mode) or changedir
 
+    End Sub
+
+    Sub Ping()
+        Dim target As String
+        Dim ipaddresssample As IPAddress
+        target = Console.ReadLine
+        Dim isvalidip As Boolean = IPAddress.TryParse(target, ipaddresssample)
+        Dim isvalidURL As Boolean = Uri.IsWellFormedUriString(target, UriKind.RelativeOrAbsolute)
+        If isvalidip Then
+            If My.Computer.Network.Ping(target) Then
+                Console.WriteLine("Server {0} pinged successfully.", target)
+            Else
+                Console.WriteLine("Server {0} ping request timed out.", target)
+            End If
+        ElseIf isvalidURL Then
+            If My.Computer.Network.Ping(target) Then
+                Console.WriteLine("Server {0} pinged successfully.", target)
+            Else
+                Console.WriteLine("Server {0} ping request timed out.", target)
+            End If
+        ElseIf String.IsNullOrWhiteSpace(target) Then
+            Console.WriteLine("This input cannot be empty.")
+        Else
+            Console.WriteLine("The address is not valid.")
+        End If
+        MainConsole()
     End Sub
 
     Sub Rename()
@@ -477,13 +766,15 @@ Module Home
 
     Sub RestartApp(ByVal msg As Boolean)
         If msg = True Then
-            Console.WriteLine("You need to restart MConsole to take the effect, restart now? Press n to abort...")
-            Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod().ToString)
-            c = Console.ReadLine()
-            Select Case c.ToLower
-                Case "n", "no"
-                    Console.WriteLine("Returning back...")
-                    Exit Sub
+            Console.WriteLine("You need to restart MConsole to take the effect, restart now? [Y/N]")
+            Dim decide As ConsoleKeyInfo
+            decide = Console.ReadKey()
+            Select Case decide.Key
+                Case ConsoleKey.N
+                    Console.WriteLine()
+                    Console.WriteLine("Turning back to main screen...")
+                    MainConsole()
+                    'Exit Sub
                 Case Else
                     Threading.Thread.Sleep(2000)
                     Console.Clear()

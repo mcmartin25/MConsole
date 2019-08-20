@@ -1,7 +1,12 @@
-﻿Module SettingsConsole
-    Sub Settings()
-        Console.WriteLine("Settings")
-        Console.WriteLine("Type help if you need commands in every settings.")
+﻿Imports System.IO
+Imports System.Xml
+
+Module SettingsConsole
+    Sub Settings(ByVal titled As Boolean)
+        If titled Then
+            Console.WriteLine("Settings")
+            Console.WriteLine("Type help if you need commands in every settings.")
+        End If
         Console.Write(">")
         c = Console.ReadLine()
         Select Case c.ToLower
@@ -19,26 +24,27 @@
                 Console.WriteLine("Turning back to main screen...")
                 MainConsole()
             Case Else
-                Settings()
+                Settings(False)
         End Select
     End Sub
 
     Sub SetDevMode()
         Console.WriteLine("Development mode")
-        Console.WriteLine("This mode will give some unfinished functions for developers to test. Use at your own risk. [On/Off]")
-        Console.Write("devmode>")
-        c = Console.ReadLine()
-        Select Case c.ToLower
-            Case "start", "open", "enable", "yes", "y", "on"
+        Console.WriteLine("This mode will give some unfinished functions for developers to test. Use at your own risk. [Y/N]")
+        Dim setkey As ConsoleKeyInfo
+        setkey = Console.ReadKey()
+        Console.WriteLine()
+        Select Case setkey.Key
+            Case ConsoleKey.Y
                 My.Settings.DevMode = True
                 Console.WriteLine("Saved.")
-                Settings()
-            Case "stop", "close", "disable", "no", "n", "off"
+                Settings(False)
+            Case ConsoleKey.N
                 My.Settings.DevMode = False
                 Console.WriteLine("Saved.")
-                Settings()
+                Settings(False)
             Case Else
-                Settings()
+                Settings(False)
         End Select
     End Sub
 
@@ -47,27 +53,22 @@
         c = Console.ReadLine()
         Select Case c.ToLower
             Case "location"
-                Console.WriteLine("This will open/close your current directory display when startup. [On/Off]")
+                Console.WriteLine("This will open/close your current directory display when startup. [Y/N]")
                 Console.Write("location>")
-                c = Console.ReadLine()
-                Select Case c.ToLower
-                    Case "start", "open", "enable", "yes", "y", "on"
+                Dim setkey As ConsoleKeyInfo
+                setkey = Console.ReadKey()
+                Console.WriteLine()
+                Select Case setkey.Key
+                    Case ConsoleKey.Y
                         My.Settings.ssLocationDisp = True
                         Console.WriteLine("Current directory will display when startup.")
-                    Case "stop", "close", "disable", "no", "n", "off"
+                    Case ConsoleKey.N
                         My.Settings.ssLocationDisp = False
                         Console.WriteLine("Current directory will not display when startup.")
                     Case Else
-                        Settings()
+                        Settings(False)
                 End Select
-                Console.WriteLine("You need to restart MConsole to apply the effect, restart now? Press n to abort...")
-                c = Console.ReadLine()
-                Select Case c.ToLower
-                    Case "n", "no"
-                        Settings()
-                    Case Else
-                        RestartApp(True)
-                End Select
+                RestartApp(True)
             Case "help"
                 Console.WriteLine("Display settings")
                 Console.WriteLine("Command            Description")
@@ -76,7 +77,7 @@
                 Console.WriteLine()
                 SetDisplay()
             Case Else
-                Settings()
+                Settings(False)
         End Select
     End Sub
 
@@ -85,20 +86,21 @@
         c = Console.ReadLine()
         Select Case c.ToLower
             Case "commandview", "history"
-                Console.WriteLine("This will start/stop record your commands history. [On/Off]")
-                Console.Write("commandview>")
-                c = Console.ReadLine()
-                Select Case c.ToLower
-                    Case "start", "open", "enable", "yes", "y", "on"
+                Console.WriteLine("This will start/stop record your commands history. [Y/N]")
+                Dim setkey As ConsoleKeyInfo
+                setkey = Console.ReadKey()
+                Console.WriteLine()
+                Select Case setkey.Key
+                    Case ConsoleKey.Y
                         My.Settings.recCommand = True
                         Console.WriteLine("Saved.")
-                        Settings()
-                    Case "stop", "close", "disable", "no", "n", "off"
+                        Settings(False)
+                    Case ConsoleKey.N
                         My.Settings.recCommand = False
                         Console.WriteLine("Saved.")
-                        Settings()
+                        Settings(False)
                     Case Else
-                        Settings()
+                        Settings(False)
                 End Select
             Case "help"
                 Console.WriteLine("Privacy settings")
@@ -109,7 +111,7 @@
                 Console.WriteLine()
                 SetPrivacy()
             Case Else
-                Settings()
+                Settings(False)
         End Select
     End Sub
 
@@ -146,7 +148,7 @@
                 My.Settings.setusername = True
                 Exit Select
         End Select
-        Settings()
+        Settings(False)
     End Sub
 
     Sub Help()
@@ -159,6 +161,84 @@
         Console.WriteLine("privacy            Open privacy settings.")
         Console.WriteLine("user               Open user settings.")
         Console.WriteLine()
-        Settings()
+        Settings(False)
     End Sub
+
+    Sub ReadConfig() 'Read config
+
+    End Sub
+
+    Sub CreateConfig(ByVal path As String) 'Create config on startup
+        Dim xwriter As XmlWriter
+        Debug.WriteLine("Creating Config...")
+        Try
+            Dim xset As XmlWriterSettings = New XmlWriterSettings()
+            xset.Indent = True
+            xset.NewLineOnAttributes = True
+            xwriter = XmlWriter.Create(path, xset)
+            xwriter.WriteStartDocument()
+
+            'display settings
+            xwriter.WriteStartElement("settings")
+            'xwriter.WriteAttributeString("category", "display")
+
+            xwriter.WriteStartElement("display")
+            xwriter.WriteAttributeString("filelocation", My.Settings.ssLocationDisp)
+            xwriter.WriteEndElement()
+
+            xwriter.WriteStartElement("privacy")
+            xwriter.WriteAttributeString("history", My.Settings.recCommand)
+            xwriter.WriteEndElement()
+
+            xwriter.WriteStartElement("user")
+            xwriter.WriteAttributeString("status", My.Settings.setusername)
+            xwriter.WriteAttributeString("name", My.Settings.username)
+            xwriter.WriteEndElement()
+
+            xwriter.WriteStartElement("devmode")
+            xwriter.WriteAttributeString("status", My.Settings.DevMode)
+            xwriter.WriteEndElement()
+
+            xwriter.WriteEndElement()
+
+            xwriter.WriteEndDocument()
+
+            xwriter.Flush()
+            xwriter.Close()
+
+            Debug.WriteLine("Create Config success, turning back to main screen...")
+        Catch ex As Exception
+            Console.WriteLine("Create Config Error!")
+            Console.WriteLine("{0}", ex.Message)
+            Console.WriteLine("{0}", ex.StackTrace)
+            Console.WriteLine("Press any key to continue...")
+            Console.ReadKey()
+        End Try
+    End Sub
+
+    Sub WriteConfig(ByVal path As String) 'Edit config
+        Dim xwriter As XmlWriter
+        Debug.WriteLine("Creating Config...")
+        Try
+            Dim xset As XmlWriterSettings = New XmlWriterSettings()
+            xset.Indent = True
+            xset.NewLineOnAttributes = False
+            xwriter = XmlWriter.Create(path, xset)
+            xwriter.WriteStartDocument()
+
+            xwriter.WriteEndDocument()
+
+            xwriter.Flush()
+            xwriter.Close()
+
+            Debug.WriteLine("Create Config success, turning back to main screen...")
+        Catch ex As Exception
+            Console.WriteLine("Create Config Error!")
+            Console.WriteLine("{0}", ex.Message)
+            Console.WriteLine("{0}", ex.StackTrace)
+            Console.WriteLine("Press any key to continue...")
+            Console.ReadKey()
+        End Try
+    End Sub
+
 End Module

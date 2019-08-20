@@ -1,7 +1,9 @@
-﻿Module StartScreen
+﻿Imports System.IO
+
+Module StartScreen
     Public c As String 'Command text variable
     Public verstr As String = "0.4" 'Version
-    Public fullver As String = "0.4.20190812" 'Full version
+    Public fullver As String = "0.4.20190818" 'Full version
     Public synerr As String = " Is Not a command. Type help If you forget commands." 'Syntax error message
     'Public dev As Boolean = False 'Settings: Dev Mode
     'Public locationdisp As Boolean = True  'Settings: Enable/Disable location display
@@ -10,7 +12,20 @@
     Public commands As List(Of String) = New List(Of String)(commandlist)
     Public currentdir As String = AppDomain.CurrentDomain.BaseDirectory 'Current directory
 
+    Sub CheckFile()
+        If Not Directory.Exists(currentdir + "settings") Then
+            Directory.CreateDirectory(currentdir + "settings")
+        End If
+        'If Not File.Exists(currentdir + "settings\settings.xml") Then
+        'File.Create(currentdir + "settings\settings.xml")
+
+        'WriteConfig(currentdir + "settings\settings.xml")
+        'End If
+        CreateConfig(currentdir + "settings\settings.xml")
+    End Sub
+
     Sub Main()
+        CheckFile()
         Console.Title = "Welcome To MConsole..."
         Console.Clear()
         Console.WriteLine("-................................................-")

@@ -40,9 +40,11 @@
         Console.WriteLine("makedir            Same as md.")
         Console.WriteLine("md                 Make a new directory.")
         Console.WriteLine("move               Move file to new directory.")
+        Console.WriteLine("network            Show network information.")
         Console.WriteLine("movedir            Move directory to new directory/location.")
         Console.WriteLine("newdir             Same as md.")
         Console.WriteLine("open               Open file or folder. (This cannot run executable.)")
+        Console.WriteLine("ping               Ping server.")
         Console.WriteLine("rename             Rename file.")
         Console.WriteLine("renamedir          Rename folder.")
         Console.WriteLine("rendir             Same as renamedir.")
@@ -172,7 +174,7 @@
 
     Sub CommandView()
         If My.Settings.recCommand = True Then
-            Console.WriteLine("For security reasons, olny the newest 3 commands (sub-commands included) will be list here.")
+            Console.WriteLine("For security reasons, only the newest 3 commands (sub-commands included) will be list here.")
             Console.WriteLine("")
             For Each item In commands
                 Console.WriteLine(item)
