@@ -1,0 +1,23 @@
+If you want to know more information about version and copyright, type "about".
+To display all the Previous and current feature changes and application logs, type "applog".
+If you want to display file system for each partition in your hard drive and USB flash drive, type "alldrives".
+To run simple calulations, type "calc"
+Type "cd" to change current directory/folder.
+Type "cls" to clear sereen.
+If you want to display 3 command that recently used, type "comandview".
+If you want to copy your file once, use "copy" command. However, you need to use "copydir" if you want to copy more than one file, or your directory/folder.
+Type "date" to display date and time.
+You can show all partition(s) you have on your disk(s) like C:\, D:\ by typing "drives" command.
+Type "echo" if you want to copy or echo a message you want.
+Type "help" if you forgot any commands.
+If you want to create a directory/folder, type "md".
+If you want to move your file once, use "move" command. However, you need to use "movedir" if you want to move your directory/folder.
+Type "open" to open any file or folder. For executable, use "run" command instead.
+Type "rename" to change file name. Also, you can change directory/folder's name by using "renamedir".
+Type "restart" to restart MConsole.
+Type "settings" to open MConsole settings.
+Show your host system you using by using "sysinfo" command.
+Type "time" to display time and date.
+Type "ver" to show MConsole version.
+Type "where" to show current directory or folder location, you can also find out same information from *Location* tag on the next line.
+Type "who" to know which name are you using.

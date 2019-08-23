@@ -164,8 +164,29 @@ Module SettingsConsole
         Settings(False)
     End Sub
 
-    Sub ReadConfig() 'Read config
-
+    Sub ReadConfig(ByVal path As String) 'Read config
+        Try
+            Dim reader As New XmlTextReader(path)
+            While reader.Read()
+                Select Case reader.NodeType
+                    Case XmlNodeType.Element
+                        Console.WriteLine("<" + reader.Name & ">")
+                        Exit Select
+                    Case XmlNodeType.Text
+                        Console.WriteLine(reader.Value)
+                        Exit Select
+                    Case XmlNodeType.EndElement
+                        Console.WriteLine("")
+                        Exit Select
+                End Select
+            End While
+        Catch ex As Exception
+            Console.WriteLine("Read Config Error!")
+            Console.WriteLine("{0}", ex.Message)
+            Console.WriteLine("{0}", ex.StackTrace)
+            Console.WriteLine("Press any key to continue...")
+            Console.ReadKey()
+        End Try
     End Sub
 
     Sub CreateConfig(ByVal path As String) 'Create config on startup

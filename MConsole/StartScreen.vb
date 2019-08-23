@@ -16,18 +16,24 @@ Module StartScreen
         If Not Directory.Exists(currentdir + "settings") Then
             Directory.CreateDirectory(currentdir + "settings")
         End If
-        'If Not File.Exists(currentdir + "settings\settings.xml") Then
-        'File.Create(currentdir + "settings\settings.xml")
-
-        'WriteConfig(currentdir + "settings\settings.xml")
-        'End If
-        CreateConfig(currentdir + "settings\settings.xml")
+        If Not File.Exists(currentdir + "settings\settings.xml") Then
+            CreateConfig(currentdir + "settings\settings.xml")
+            'File.Create(currentdir + "settings\settings.xml")
+            'WriteConfig(currentdir + "settings\settings.xml")
+        End If
+        If File.Exists(currentdir + "settings\settings.xml") Then
+            ReadConfig(currentdir + "settings\settings.xml")
+        End If
+        Console.ReadKey()
     End Sub
 
     Sub Main()
-        CheckFile()
+        'CheckFile()
         Console.Title = "Welcome To MConsole..."
         Console.Clear()
+        If My.Settings.DevMode = True Then
+            Console.ForegroundColor = ConsoleColor.Blue
+        End If
         Console.WriteLine("-................................................-")
         Console.WriteLine("-````````````````````````````````````````````````-")
         Console.WriteLine("-````````````````````````````````````````````````-")
@@ -53,6 +59,7 @@ Module StartScreen
         Console.WriteLine("-````````````````````````````````````````````````-")
         Console.WriteLine("-````````````````````````````````````````````````-")
         Console.WriteLine("-................................................-")
+        Console.ForegroundColor = ConsoleColor.White
         Console.WriteLine("MConsole v.{0} Pre-alpha", verstr)
         Console.WriteLine("A command console based on VB.net.")
         Console.WriteLine("Copyright (c) 2018-2019 Martin C.")
@@ -66,32 +73,37 @@ Module StartScreen
         Console.WriteLine("MConsole v.{0} Pre-alpha", verstr)
         Console.WriteLine("Copyright (c) 2018-2019 Martin C.")
         Threading.Thread.Sleep(500)
+        My.Settings.username = Environment.UserName
+        Select Case Date.Now.ToString("HH")
+            Case 0 To 11
+                Console.WriteLine("Good morning, {0}, welcome to MConsole.", My.Settings.username)
+            Case 12 To 14
+                Console.WriteLine("Good afternoon, {0}, welcome to MConsole.", My.Settings.username)
+            Case 18 To 23
+                Console.WriteLine("Good evening, {0}, welcome to MConsole.", My.Settings.username)
+            Case Else
+                Console.WriteLine("Hi there, {0}, welcome to MConsole.", My.Settings.username)
+        End Select
+
+        Dim r As Random = New Random
+        Dim FinishedList As New List(Of String)
+        Dim Lines = My.Resources.tips.Split(vbCrLf)
+        Dim temp As String = ""
+        For Each line In Lines
+            temp = line.Replace(vbLf, "")
+            If Not String.IsNullOrWhiteSpace(temp) Then
+                FinishedList.Add(temp)
+            End If
+        Next
+        Dim listindex As Integer = Int(r.Next(0, FinishedList.Count) - 1)
+        Console.WriteLine("Tips: {0}", FinishedList.Item(listindex))
+
+
+        'Console.WriteLine("Hi there, {0}, welcome to MConsole", My.Settings.username)
+        'Console.WriteLine("Hours now: {0}", CInt(Date.Now.ToString("HH")))
         If My.Settings.ssLocationDisp = True Then
             Console.WriteLine("Location: {0}", currentdir)
         End If
-
-        If My.Settings.setusername = False Then
-            Dim temp As String
-            Console.WriteLine("")
-            Console.WriteLine("Hi there, welcome to MConsole")
-            Console.WriteLine("Your name is {0}, Right?", Environment.UserName)
-            Console.WriteLine("If this name's right then press enter once, or type other name you want to display in this console.")
-            Console.WriteLine("Type ""none"" if you want to hide your username in MConsole this time.")
-            c = Console.ReadLine()
-            temp = c
-            Select Case c.ToLower
-                Case "none"
-                    My.Settings.username = ""
-                    My.Settings.setusername = False
-                Case String.Empty, " " 'String.IsNullOrWhiteSpace(c)
-                    My.Settings.username = Environment.UserName
-                    My.Settings.setusername = True
-                Case Else
-                    My.Settings.username = temp
-                    My.Settings.setusername = True
-            End Select
-        End If
-
         MainConsole()
     End Sub
 End Module

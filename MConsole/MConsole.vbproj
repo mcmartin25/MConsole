@@ -136,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon_v2.ico" />
+    <None Include="Resources\tips.txt" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
