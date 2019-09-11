@@ -15,9 +15,16 @@ If you want to move your file once, use "move" command. However, you need to use
 Type "open" to open any file or folder. For executable, use "run" command instead.
 Type "rename" to change file name. Also, you can change directory/folder's name by using "renamedir".
 Type "restart" to restart MConsole.
-Type "settings" to open MConsole settings.
+Type "settings" to open and change MConsole settings.
 Show your host system you using by using "sysinfo" command.
 Type "time" to display time and date.
 Type "ver" to show MConsole version.
 Type "where" to show current directory or folder location, you can also find out same information from *Location* tag on the next line.
 Type "who" to know which name are you using.
+Type "settings" then type "display" and "colorize" to toggle colorize mode.
+Type "settings" then type "display" and "location" to toggle displaying your current directory when startup.
+Type "settings" then type "privacy" and "commandview" to enable recording command history.
+Type "settings" then type "user" to change current username.
+MConsole uses user name of user that currently logged in. You can change it in user settings.
+MConsole uses different greetings in different timings.
+If you want to find the content in this console, press Ctrl+F then type.

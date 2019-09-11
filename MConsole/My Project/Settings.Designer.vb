@@ -92,7 +92,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("User")>  _
         Public Property username() As String
             Get
                 Return CType(Me("username"),String)
@@ -111,6 +111,114 @@ Namespace My
             End Get
             Set
                 Me("setusername") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+        Public Property Colorized() As Boolean
+            Get
+                Return CType(Me("Colorized"),Boolean)
+            End Get
+            Set
+                Me("Colorized") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property centeredTitle() As Boolean
+            Get
+                Return CType(Me("centeredTitle"),Boolean)
+            End Get
+            Set
+                Me("centeredTitle") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property themeStatus() As Boolean
+            Get
+                Return CType(Me("themeStatus"),Boolean)
+            End Get
+            Set
+                Me("themeStatus") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("none")>  _
+        Public Property selectedTheme() As String
+            Get
+                Return CType(Me("selectedTheme"),String)
+            End Get
+            Set
+                Me("selectedTheme") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property titleStatus() As Boolean
+            Get
+                Return CType(Me("titleStatus"),Boolean)
+            End Get
+            Set
+                Me("titleStatus") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property titleContent() As String
+            Get
+                Return CType(Me("titleContent"),String)
+            End Get
+            Set
+                Me("titleContent") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property greetingsStatus() As Boolean
+            Get
+                Return CType(Me("greetingsStatus"),Boolean)
+            End Get
+            Set
+                Me("greetingsStatus") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property greetings() As String
+            Get
+                Return CType(Me("greetings"),String)
+            End Get
+            Set
+                Me("greetings") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property tipsDisplay() As String
+            Get
+                Return CType(Me("tipsDisplay"),String)
+            End Get
+            Set
+                Me("tipsDisplay") = value
             End Set
         End Property
     End Class

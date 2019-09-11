@@ -1,9 +1,9 @@
 ﻿Module Info
     Sub Help()
-        Console.WriteLine("If you want to find the content in this console, press Ctrl+F then type.")
+        ConsoleWriteColored(ConsoleColor.DarkGray, True, "If you want to find the content in this console, press Ctrl+F then type.")
         Console.WriteLine()
-        Console.WriteLine("Command            Description")
-        Console.WriteLine("------------------------------")
+        ConsoleWriteColored(ConsoleColor.DarkGray, True, "Command            Description")
+        ConsoleWriteColored(ConsoleColor.DarkGray, True, "------------------------------")
         Console.WriteLine("about              Display MConsole info.")
         Console.WriteLine("alldrives          Display file system for each partition.")
         Console.WriteLine("alldrivesinfo      Same as alldrives.")
@@ -69,49 +69,40 @@
     End Sub
     Sub About()
         Console.Clear()
-        Console.WriteLine("-................................................-")
-        Console.WriteLine("-````````````````````````````````````````````````-")
-        Console.WriteLine("-````````````````````````````````````````````````-")
-        Console.WriteLine("-````````````````````````````````````````````````-")
-        Console.WriteLine("-````````````````````````````````````````````````-")
-        Console.WriteLine("-````````````````````````````````````````````````-")
-        Console.WriteLine("-````````````````-ooo/``````/ooo-````````````````-")
-        Console.WriteLine("-````````````````+ssss.````.ssss+````````````````-")
-        Console.WriteLine("-```````````````-sssss/````+sssss-```````````````-")
-        Console.WriteLine("-````````.:++```+ssssss.``.ssssss+```/+:.````````-")
-        Console.WriteLine("-`````-/osso/``-sssssss/``+sssssss-``:osso/-`````-")
-        Console.WriteLine("-`.:+ssso/-````+ssssssss.-ssssssss+````-/+sss+:.`-")
-        Console.WriteLine("-/sssso-``````-sssss:sss++ss++sssss-``````-ossss/-")
-        Console.WriteLine("-``-/osso/-.``+sssso`/ssssss.-sssss+```-/osso/-.`-")
-        Console.WriteLine("-`````.:+sss/-sssss-`.sssss/``+sssss-:sss+/-`````-")
-        Console.WriteLine("-````````.-/++ssss+```/ssss.``.sssss+/+:.````````-")
-        Console.WriteLine("-```````````-sssss-```.sss/````+sssss-```````````-")
-        Console.WriteLine("-```````````+ssss+`````/ss.````.sssss+```````````-")
-        Console.WriteLine("-``````````.ooooo-`````.+/``````/ooooo.``````````-")
-        Console.WriteLine("-````````````````````````````````````````````````-")
-        Console.WriteLine("-````````````````````````````````````````````````-")
-        Console.WriteLine("-````````````````````````````````````````````````-")
-        Console.WriteLine("-````````````````````````````````````````````````-")
-        Console.WriteLine("-````````````````````````````````````````````````-")
-        Console.WriteLine("-................................................-")
-        Console.WriteLine("MConsole v.{0} Pre-alpha", verstr)
-        Console.WriteLine("MConsole Pre-Alpha Version {0}", fullver)
-        Console.WriteLine("Copyright (c) 2018-2019 Martin C. All rights reserved.")
-        Console.WriteLine("Type applog command to see its features and logs.")
+
+
+        If My.Settings.centeredTitle Then
+
+            For Each i As String In iconStrings
+                CenterWriteColored(ConsoleColor.Blue, True, True, i)
+            Next
+            CenterWriteColored(ConsoleColor.DarkGray, True, True, "MConsole v.{0} Pre-alpha", verstr)
+            CenterWriteColored(ConsoleColor.DarkGray, True, True, "MConsole Pre-Alpha Version {0}", fullver)
+            CenterWriteColored(ConsoleColor.DarkGray, True, True, "Copyright (c) 2018-2019 Martin C. All rights reserved.")
+            CenterWriteColored(ConsoleColor.DarkGray, True, True, "Type applog command to see its features and logs.")
+        Else
+            For Each i As String In iconStrings
+                ConsoleWriteColored(ConsoleColor.Blue, True, i)
+            Next
+            ConsoleWriteColored(ConsoleColor.DarkGray, True, "MConsole v.{0} Pre-alpha", verstr)
+            ConsoleWriteColored(ConsoleColor.DarkGray, True, "MConsole Pre-Alpha Version {0}", fullver)
+            ConsoleWriteColored(ConsoleColor.DarkGray, True, "Copyright (c) 2018-2019 Martin C. All rights reserved.")
+            ConsoleWriteColored(ConsoleColor.DarkGray, True, "Type applog command to see its features and logs.")
+        End If
         Console.ReadKey()
         'Threading.Thread.Sleep(500)
         Console.Clear()
         MainConsole()
     End Sub
     Sub Applog()
-        Console.WriteLine("Features")
+        ConsoleWriteColored(ConsoleColor.DarkGray, True, "Features")
         Console.WriteLine("* Optimized code")
         Console.WriteLine("* Add command: clear, open, run, commandview, cv, history")
         Console.WriteLine("* Fix unable to input command when uppercase")
         Console.WriteLine("* Add main app folder location(for development purpose)")
         Console.WriteLine("* Fix unable to input command when uppercase text included")
-        Console.WriteLine("-----")
-        Console.WriteLine("Applog")
+        ConsoleWriteColored(ConsoleColor.DarkGray, True, "-----")
+        ConsoleWriteColored(ConsoleColor.DarkGray, True, "Applog")
         Console.WriteLine("Version 0.1.20180120")
         Console.WriteLine("* First version of MConsole")
         Console.WriteLine("Version 0.1.20180121")
@@ -202,14 +193,15 @@
 
     Sub CommandView()
         If My.Settings.recCommand = True Then
-            Console.WriteLine("For security reasons, only the newest 3 commands (sub-commands included) will be list here.")
+            ConsoleWriteColored(ConsoleColor.DarkGray, True, "For security reasons, only the newest 3 commands (sub-commands included) will be list here.")
             Console.WriteLine("")
             For Each item In commands
                 Console.WriteLine(item)
             Next
             MainConsole()
         Else
-            Console.WriteLine("You disabled commandview/history function, please enable it.")
+            'Console.WriteLine("You disabled commandview/history function, please enable it.")
+            MessageColored(2, True, "You disabled commandview/history function, please enable it.")
             MainConsole()
         End If
     End Sub

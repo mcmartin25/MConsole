@@ -6,7 +6,7 @@ Module Home
     Sub MainConsole()
         'Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory)
         Console.WriteLine()
-        Console.Write(">")
+        ConsoleWriteColored(ConsoleColor.DarkGray, False, ">")
         c = Console.ReadLine()
         If My.Settings.recCommand = True And c.ToLower <> "cv" And c.ToLower <> "commandview" And c.ToLower <> "history" Then
             commands.RemoveAt(2)
@@ -41,10 +41,14 @@ Module Home
                 DrivePart()
             Case "echo", "say", "shout"
                 EchoText()
+            Case "editfile", "edit"
+                EditFile()
             Case "exit"
                 ExitMsg()
             Case "help"
                 Info.Help()
+            Case "makefile", "create"
+                MakeFile()
             Case "md", "makedir", "newdir"
                 Makedir()
             Case "move"
@@ -53,7 +57,7 @@ Module Home
                 Movedir()
             Case "network"
                 Dim mode As ConsoleKeyInfo
-                Console.WriteLine("Detailed or summary? [d/s]")
+                MessageColored(3, False, "Detailed or summary? [d/s]")
                 mode = Console.ReadKey
                 If mode.Key = ConsoleKey.D Then
                     NetworkInfo(True)
@@ -79,6 +83,8 @@ Module Home
                 Run()
             Case "set", "setting", "settings"
                 Settings(True)
+            Case "sym", "htmlsym"
+                HTMLSymbolConvert()
             Case "sysinfo", "systeminfo"
                 Systeminfo()
             Case "time"
@@ -91,7 +97,8 @@ Module Home
                 WhoAmI()
             Case Else
                 If c <> String.Empty Then
-                    Console.WriteLine(c + synerr)
+                    'Console.WriteLine(c + synerr)
+                    MessageColored(2, True, "{0} {1}", c, synerr)
                     Threading.Thread.Sleep(500)
                     MainConsole()
                 Else
@@ -100,16 +107,18 @@ Module Home
                 Try
                     Throw New DivideByZeroException()
                 Catch ex As Exception
-                    If (TypeOf Err.GetException() Is DivideByZeroException) Then
-                        Console.WriteLine("An error appeared in MConsole. Console progress is terminated. Restarting the console...")
-                        Debug.Write("MConsole progress is terminated, due to entered invaild connand """)
-                        Debug.Write(c)
-                        Debug.WriteLine(""". Now we are restarting the console... Error code: System.DivideByZeroException")
-                        Threading.Thread.Sleep(2000)
-                        Console.Clear()
-                        Threading.Thread.Sleep(1000)
-                        Main()
-                    End If
+                    'If (TypeOf Err.GetException() Is DivideByZeroException) Then
+                    'Console.WriteLine("An error appeared in MConsole. Console progress is terminated. Restarting the console...")
+                    MessageColored(2, True, "An error appeared in MConsole. Console progress is terminated. Restarting the console...")
+                    Debug.Write("MConsole progress is terminated, due to entered invaild connand """)
+                    Debug.Write(c)
+                    Debug.Write(""". Now we are restarting the console... Error code: ") 'System.DivideByZeroException
+                    Debug.WriteLine(ex.Message)
+                    Threading.Thread.Sleep(2000)
+                    Console.Clear()
+                    Threading.Thread.Sleep(1000)
+                    Main()
+                    'End If
                 End Try
         End Select
     End Sub
@@ -140,11 +149,11 @@ Module Home
             If IsNumeric(arraytemp(2)) Then
                 c2 = arraytemp(2)
             Else
-                Console.WriteLine("Calculate command error")
+                MessageColored(2, True, "Calculate command error")
                 MainConsole()
             End If
         Else
-            Console.WriteLine("Calculate command error")
+            MessageColored(2, True, "Calculate command error")
             MainConsole()
         End If
 
@@ -182,16 +191,16 @@ Module Home
 
     Sub ChangeDir()
         Dim newdir As String
-        Console.WriteLine("The current directory is {0}.", currentdir)
-        Console.Write("Folder directory/location: ")
+        ConsoleWriteColored(ConsoleColor.DarkGray, True, "The current directory is {0}.", currentdir)
+        ConsoleWriteColored(ConsoleColor.DarkGray, True, "Folder directory/location: ")
         newdir = Console.ReadLine()
         If (System.IO.Directory.Exists(newdir)) Then
             currentdir = newdir
-            Console.Write("Current directory changed to {0}.", currentdir)
+            MessageColored(0, True, "Current directory changed to {1}.", currentdir)
         ElseIf newdir = String.Empty Then
             MainConsole()
         Else
-            Console.Write("Directory/folder {0} does not exist. Unable to change current directory.", newdir)
+            MessageColored(2, True, "Directory/folder {0} does not exist. Unable to change current directory.", newdir)
         End If
         MainConsole()
     End Sub
@@ -204,11 +213,12 @@ Module Home
         copydir = Console.ReadLine()
         If Not File.Exists(copydir) Then
             My.Computer.FileSystem.CopyFile(currentdir + filetarget, copydir)
-            Console.WriteLine("File {0} has been copied to new directory with file named {1}.", currentdir + filetarget, copydir)
+            MessageColored(0, True, " File {0} has been copied to new directory with file named {1}.", currentdir + filetarget, copydir)
         ElseIf filetarget = String.Empty Or copydir = String.Empty Then
+            MessageColored(3, True, "Canceled.")
             MainConsole()
         Else
-            Console.WriteLine("File {0} already exists. Unable to copy file to new directory.", copydir)
+            MessageColored(0, True, "File {0} already exists. Unable to copy file to new directory.", copydir)
         End If
         MainConsole()
     End Sub
@@ -221,29 +231,34 @@ Module Home
         newdir = Console.ReadLine()
         If Not Directory.Exists(dirname) Then
             My.Computer.FileSystem.CopyDirectory(currentdir + dirname, newdir)
-            Console.Write("Directory/folder {0} has been copied to new directory {1}.", dirname, newdir)
+            MessageColored(0, True, "Directory/folder {0} has been copied to new directory {1}.", dirname, newdir)
         ElseIf dirname = String.Empty Or newdir = String.Empty Then
+            MessageColored(3, True, "Canceled.")
             MainConsole()
         Else
-            Console.Write("Directory/folder {0} already exists. Unable to copy.", newdir)
+            MessageColored(2, True, "Directory/folder {0} already exists. Unable to copy.", newdir)
         End If
         MainConsole()
     End Sub
 
     Sub Datetimedisp(ByVal mode As String)
         If mode = "d" Then
-            Console.WriteLine("Today's date: " + Date.Now.ToShortDateString)
-            Console.WriteLine("Time: " + Date.Now.ToLongTimeString)
+            ConsoleWriteColored(ConsoleColor.DarkGray, False, "Today's date: ")
+            Console.WriteLine(Date.Now.ToShortDateString)
+            ConsoleWriteColored(ConsoleColor.DarkGray, False, "Time: ")
+            Console.WriteLine(Date.Now.ToLongTimeString)
         ElseIf mode = "t" Then
-            Console.WriteLine("Time Now: " + Date.Now.ToLongTimeString)
-            Console.WriteLine("Date: " + Date.Now.ToShortDateString)
+            ConsoleWriteColored(ConsoleColor.DarkGray, False, "Time now: ")
+            Console.WriteLine(Date.Now.ToLongTimeString)
+            ConsoleWriteColored(ConsoleColor.DarkGray, False, "Date: ")
+            Console.WriteLine(Date.Now.ToShortDateString)
         End If
         MainConsole()
     End Sub
 
     Sub Dir()
         If Directory.GetDirectories(currentdir).Count = 0 And Directory.EnumerateFiles(currentdir).Count = 0 Then
-            Console.WriteLine("No files or folders/directory included in folder/directory {0}", currentdir)
+            ConsoleWriteColored(ConsoleColor.DarkGray, True, "No files or folders/directory included in folder/directory {0}", currentdir)
         Else
             For Each Dir As String In Directory.GetDirectories(currentdir)
                 Console.WriteLine(Dir)
@@ -256,10 +271,10 @@ Module Home
     End Sub
 
     Sub DrivePart()
-        Dim drive = IO.DriveInfo.GetDrives
-        Console.WriteLine("Partition(s) you have")
-        For Each info In drive
-            Console.WriteLine(info.Name)
+        Dim drives = DriveInfo.GetDrives
+        ConsoleWriteColored(ConsoleColor.DarkGray, True, "Partition(s) you have")
+        For Each drive In drives
+            Console.WriteLine(drive.Name)
         Next
         MainConsole()
     End Sub
@@ -267,9 +282,10 @@ Module Home
     Sub Drivesinfo()
         Dim alldrive() As DriveInfo = DriveInfo.GetDrives()
         'Dim listnum As Integer = 0
-        Console.WriteLine("Type any available (logical) drives name (not label)")
-        Console.WriteLine("These are all your available (logical) drive(s) you can check.")
-        Console.WriteLine("***")
+        ConsoleWriteColored(ConsoleColor.DarkGray, True, "Type any available (logical) drives name (not label)")
+        ConsoleWriteColored(ConsoleColor.DarkGray, True, "These are all your available (logical) drive(s) you can check.")
+        Console.WriteLine()
+
         For Each d As DriveInfo In alldrive
             Console.WriteLine(d.Name)
             'listnum += 1
@@ -310,14 +326,14 @@ Module Home
         Dim ec As String
         Dim ecount, etime As Integer
         If c = "echo" Then
-            Console.Write("echo>")
+            ConsoleWriteColored(ConsoleColor.DarkGray, False, "echo>")
         ElseIf c = "say" Then
-            Console.Write("say>")
+            ConsoleWriteColored(ConsoleColor.DarkGray, False, "say>")
         ElseIf c = "shout" Then
-            Console.Write("shout>")
+            ConsoleWriteColored(ConsoleColor.DarkGray, False, "shout>")
         End If
         ec = Console.ReadLine()
-        Console.Write("Display Time>")
+        ConsoleWriteColored(ConsoleColor.DarkGray, False, "Display Time>")
         etime = Console.ReadLine()
         If Not ec = String.Empty Or etime = String.Empty Then
             Do Until ecount = etime
@@ -331,11 +347,18 @@ Module Home
     End Sub
 
     Sub ExitMsg()
-        Console.WriteLine("Do you want to exit? [Y/N]")
+        ConsoleWriteColored(ConsoleColor.DarkGray, True, "Do you want to exit? [Y/N]")
         Dim decide As ConsoleKeyInfo
         decide = Console.ReadKey()
         Select Case decide.Key
             Case ConsoleKey.Y
+                Try
+                    My.Settings.Save()
+                    MessageColored(0, True, "Settings saved successfully.")
+                Catch ex As Exception
+                    MessageColored(2, True, "There is something wrong about saving config. Cannot save settings.")
+                End Try
+                Threading.Thread.Sleep(2000)
                 Environment.Exit(0)
             Case ConsoleKey.N
                 MainConsole()
@@ -345,7 +368,7 @@ Module Home
     End Sub
 
     Sub Fsinfo()
-        Dim alldrive() As IO.DriveInfo = IO.DriveInfo.GetDrives()
+        Dim alldrive() As DriveInfo = IO.DriveInfo.GetDrives()
         Dim d As IO.DriveInfo
         For Each d In alldrive
             Console.WriteLine("Drive {0}", d.Name)
@@ -358,9 +381,44 @@ Module Home
         MainConsole()
     End Sub
 
+    Sub HTMLSymbolConvert()
+        Dim text As String
+        ConsoleWriteColored(ConsoleColor.DarkGray, True, "Please seperate by using space if need to convert from text to the HTML symbol code, or error will be encountered.")
+        ConsoleWriteColored(ConsoleColor.DarkGray, False, "Content: ")
+        text = Console.ReadLine
+        If text.StartsWith("&#") And text.EndsWith(";") And Not text.Contains("[A-Z]") Then
+            'HTML Code > Text
+            Dim stringArray() As String = text.Split(" ")
+            Try
+                For Each item In stringArray
+                    Console.Write(Chr(System.Text.RegularExpressions.Regex.Replace(item, "[&#;]", String.Empty)))
+                Next
+            Catch ex As Exception
+                ConsoleWriteColored(ConsoleColor.DarkGray, True, "The value is not correct. Tips: If you want to convert a HTML code as a string, add a extra space after the semicolon.")
+            End Try
+        ElseIf IsNumeric(text) Then
+            Try
+                Console.WriteLine(ChrW(text))
+
+            Catch ex As Exception
+                ConsoleWriteColored(ConsoleColor.DarkGray, True, "The value is not correct. Tips: If you want to convert a HTML code as a string, add a extra space.")
+            End Try
+        Else
+            'Text > HTML Code
+            Dim sb As New Text.StringBuilder()
+            Dim charArray() As Char = text.ToCharArray()
+            For i = 0 To charArray.Length - 1
+                sb.Append((String.Format("&#{0};", Asc(charArray(i)))) & " ")
+            Next
+            Console.WriteLine(sb.ToString)
+        End If
+
+        MainConsole()
+    End Sub
+
     Sub Listdir() 'Simliar as dir(list mode)
         'Dim d As String
-        Console.WriteLine("This displays all of the entries of file system you using.")
+        ConsoleWriteColored(ConsoleColor.DarkGray, True, "This displays all of the entries of file system you using.")
         'Console.WriteLine("Please type a directory")
         'Console.Write("Directory: ")
         'd = Console.ReadLine()
@@ -372,53 +430,204 @@ Module Home
 
     Sub Makedir()
         Dim dirname As String
-        Console.Write("New folder directory/location and name: {0}", currentdir)
+        ConsoleWriteColored(ConsoleColor.DarkGray, False, "New folder directory/location and name: {0}", currentdir)
         dirname = Console.ReadLine()
         If (Not System.IO.Directory.Exists(dirname)) Then
             IO.Directory.CreateDirectory(dirname)
-            Console.WriteLine("New directory/folder has been created in directory/folder {0}.", dirname)
+            MessageColored(0, True, "New directory/folder has been created in directory/folder {0}.", dirname)
         ElseIf dirname = String.Empty Then
+            MessageColored(3, True, "Discarded.")
             MainConsole()
         Else
-            Console.WriteLine("Directory/folder {0} exists. Unable to create.", dirname)
+            MessageColored(2, True, "Directory/folder {0} exists. Unable to create.", dirname)
+        End If
+        MainConsole()
+    End Sub
+
+    'EditFile sub. Move back when finished.
+    Sub EditFile()
+        Dim filetarget As String
+        Dim content As String = Nothing
+        Dim found As Boolean = False
+        ConsoleWriteColored(ConsoleColor.DarkGray, False, "File name with extension: {0}", currentdir)
+        filetarget = Console.ReadLine()
+        If Not String.IsNullOrEmpty(filetarget) Or File.Exists(currentdir + filetarget) Then
+            found = True
+        Else
+            MessageColored(2, True, "This target filename is null or file not exist. Cannot open file.")
+        End If
+        If found Then
+            content = File.ReadAllText(currentdir + filetarget)
+
+            ConsoleWriteColored(ConsoleColor.DarkGray, True, "Content (Press Esc key to save or discard changes): ")
+
+            Dim stringList() As String = content.Split(vbCrLf)
+
+            Console.WriteLine()
+            'Console.WriteLine("Final content: ")
+            For Each line In stringList
+                Console.Write(line)
+            Next
+
+
+            Dim cki As ConsoleKeyInfo
+            Do
+                cki = Console.ReadKey(True)
+                If Char.IsLetterOrDigit(cki.KeyChar) Or Char.IsNumber(cki.KeyChar) Or Char.IsSymbol(cki.KeyChar) Or Char.IsWhiteSpace(cki.KeyChar) Then 'Or Char.IsSeparator(cki.KeyChar) Then
+
+                    'If cki.Key = ConsoleKey.Enter Then
+                    'Console.WriteLine()
+                    'End If
+                    Console.Write("{0}", cki.KeyChar)
+                    content += cki.KeyChar
+                End If
+                If cki.Key = ConsoleKey.Backspace Then
+                    If Console.CursorLeft > 0 Then
+                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop)
+                        Console.Write(" ")
+                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop)
+                        content = content.Remove(content.Length - 1, 1)
+                    Else
+                        'Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop - 1)
+                        'Console.Write(" ")
+                        Console.SetCursorPosition(Console.BufferWidth - 1, Console.CursorTop)
+                        Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop - 1)
+                        content = content.Remove(content.Length - 1, 1)
+                    End If
+                    Debug.WriteLine("Left: {0}, Top: {1}", Console.CursorLeft, Console.CursorTop)
+                End If
+            Loop While cki.Key <> ConsoleKey.Escape
+
+
+
+            MessageColored(3, False, "Save or discard changes of file {0}? [Y/N]", filetarget)
+            Dim decide As ConsoleKeyInfo
+            decide = Console.ReadKey
+            Console.WriteLine()
+            Console.WriteLine(currentdir + filetarget)
+            Select Case decide.Key
+                Case ConsoleKey.Y
+                    Try
+                            File.WriteAllText(currentdir + filetarget, content)
+                        MessageColored(0, True, "File {0} saved.", filetarget)
+                    Catch ex As Exception
+                        MessageColored(2, True, "There is something wrong about saving file, usually due to the filename error. Cannot save file.")
+                    End Try
+                Case ConsoleKey.N
+                    MessageColored(3, True, "Discarded.")
+                Case Else
+                    MessageColored(3, True, "Invalid key command. Discarded.")
+            End Select
+
         End If
         MainConsole()
     End Sub
 
     Sub MakeFile()
+        Dim filetarget As String
+        Dim content As String = Nothing
+        Dim tester As Boolean = False
+        ConsoleWriteColored(ConsoleColor.DarkGray, False, "New file name with extension: {0}", currentdir)
+        filetarget = Console.ReadLine()
+        If String.IsNullOrEmpty(filetarget) Or Not File.Exists(currentdir + filetarget) Then
+            tester = True
+            MessageColored(3, True, "This session will be a testing session, no file will will be saved.")
+        End If
+        ConsoleWriteColored(ConsoleColor.DarkGray, True, "Content (Press Esc key to save or discard changes): ")
+        Dim cki As ConsoleKeyInfo
+        Do
+            cki = Console.ReadKey(True)
+            If Char.IsLetterOrDigit(cki.KeyChar) Or Char.IsNumber(cki.KeyChar) Or Char.IsSymbol(cki.KeyChar) Or Char.IsWhiteSpace(cki.KeyChar) Then 'Or Char.IsSeparator(cki.KeyChar) Then
 
+                'If cki.Key = ConsoleKey.Enter Then
+                'Console.WriteLine()
+                'End If
+                Console.Write("{0}", cki.KeyChar)
+                content += cki.KeyChar
+            End If
+            If cki.Key = ConsoleKey.Backspace Then
+                Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop)
+                Console.Write(" ")
+                Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop)
+
+                'Console.WriteLine(String.Join(", ", myList) + "\b\b")
+                content = content.Remove(content.Length - 1, 1)
+            End If
+        Loop While cki.Key <> ConsoleKey.Escape
+
+        Dim stringList() As String = content.Split(vbCrLf)
+
+        Console.WriteLine()
+        Console.WriteLine("Final content: ")
+        For Each line In stringList
+
+            Console.WriteLine(line)
+        Next
+        Console.WriteLine()
+        If tester = False Then
+
+            MessageColored(3, False, "Save or discard changes of file {0}? [Y/N]", filetarget)
+            Dim decide As ConsoleKeyInfo
+            decide = Console.ReadKey
+            Console.WriteLine()
+            Console.WriteLine(currentdir + filetarget)
+            Select Case decide.Key
+                Case ConsoleKey.Y
+                    If Not File.Exists(currentdir + filetarget) Then
+                        Try
+                            File.WriteAllText(currentdir + filetarget, content)
+                            MessageColored(0, True, "File {0} created and saved.", filetarget)
+                        Catch ex As Exception
+                            MessageColored(2, True, "There is something wrong about saving file, usually due to the filename error. Cannot create file.")
+                        End Try
+                    Else
+                        MessageColored(2, True, "File {0} already exists in folder {1}. Cannot create file.", filetarget, currentdir)
+                    End If
+                Case ConsoleKey.N
+                    MessageColored(3, True, "Discarded.")
+                Case Else
+                    MessageColored(3, True, "Invalid key command. Discarded.")
+            End Select
+        Else
+            MessageColored(3, True, "Turn back to home screen...")
+        End If
+
+
+        MainConsole()
     End Sub
 
     Sub Move()
         Dim filetarget, movedir As String
-        Console.Write("Target file: {0}", currentdir)
+        ConsoleWriteColored(ConsoleColor.DarkGray, False, "Target file: {0}", currentdir)
         filetarget = Console.ReadLine()
         Console.Write("New file directory with new file name: ")
         movedir = Console.ReadLine()
         If Not File.Exists(movedir) Then
             My.Computer.FileSystem.MoveFile(currentdir + filetarget, movedir)
-            Console.WriteLine("File {0} has been moved to new directory with file named {1}.", currentdir + filetarget, movedir)
+            MessageColored(0, True, "File {0} has been moved to new directory with file named {1}.", currentdir + filetarget, movedir)
         ElseIf filetarget = String.Empty Or movedir = String.Empty Then
+            MessageColored(3, True, "Discarded.")
             MainConsole()
         Else
-            Console.WriteLine("File {0} already exists. Unable to move file to new directory.", movedir)
+            MessageColored(2, True, "File {0} already exists. Unable to move file to new directory.", movedir)
         End If
         MainConsole()
     End Sub
 
     Sub Movedir() 'Simliar as move(dir mode)
         Dim dirname, newdir As String
-        Console.Write("Folder directory/location and name: {0}", currentdir)
+        ConsoleWriteColored(ConsoleColor.DarkGray, False, "Folder directory/location and name: {0}", currentdir)
         dirname = Console.ReadLine()
-        Console.Write("New folder directory/location: ")
+        ConsoleWriteColored(ConsoleColor.DarkGray, False, "New folder directory/location: ")
         newdir = Console.ReadLine()
         If (Not Directory.Exists(dirname)) Then
             My.Computer.FileSystem.MoveDirectory(dirname, newdir)
-            Console.WriteLine("Directory/folder {0} moved to new directory/folder {1}.", dirname, newdir)
+            MessageColored(0, True, "Directory/folder {0} moved to new directory/folder {1}.", dirname, newdir)
         ElseIf dirname = String.Empty Or newdir = String.Empty Then
+            MessageColored(3, True, "Discarded.")
             MainConsole()
         Else
-            Console.WriteLine("Directory/folder {0} exists. Unable to move.", newdir)
+            MessageColored(2, True, "Directory/folder {0} exists. Unable to move.", newdir)
         End If
         MainConsole()
     End Sub
@@ -427,11 +636,13 @@ Module Home
         Dim computerprop As IPGlobalProperties = IPGlobalProperties.GetIPGlobalProperties()
         Dim ipstat As IPGlobalStatistics = computerprop.GetIPv4GlobalStatistics
         Console.WriteLine()
-        Console.WriteLine("This computer: {0}", My.Computer.Name)
-        Console.WriteLine("This computer host name on network: {0}", computerprop.HostName)
+        ConsoleWriteColored(ConsoleColor.DarkGray, False, "This computer: ")
+        Console.WriteLine(My.Computer.Name)
+        ConsoleWriteColored(ConsoleColor.DarkGray, False, "This computer host name on network: ")
+        Console.WriteLine(computerprop.HostName)
         Console.WriteLine(computerprop.DomainName)
         If My.Computer.Network.IsAvailable Then
-            Console.WriteLine("Your network is available.")
+            MessageColored(0, True, "Your network is available.")
             'Console.WriteLine("DNS host name: {0}", System.Net.Dns.GetHostName)
             'Console.WriteLine("Network: {0}")
 
@@ -440,8 +651,10 @@ Module Home
 
             Dim ipv6s As String = Dns.GetHostEntry(Dns.GetHostName).AddressList(0).ToString()
 
-            Console.WriteLine("IPv4: {0} or {1}", ipv4s, ipv4s2)
+            ConsoleWriteColored(ConsoleColor.DarkGray, False, "IPv4: ")
+            Console.WriteLine("{0} or {1}", ipv4s, ipv4s2)
 
+            ConsoleWriteColored(ConsoleColor.DarkGray, False, "IPv6: ")
             Console.WriteLine("IPv6: {0}", ipv6s)
 
             Console.WriteLine()
@@ -450,7 +663,7 @@ Module Home
 
                 Dim nics As NetworkInterface() = NetworkInterface.GetAllNetworkInterfaces
                 If nics.Length < 0 Or nics Is Nothing Then
-                    Console.WriteLine("No NICS")
+                    ConsoleWriteColored(ConsoleColor.DarkGray, False, "No NICS")
                     Exit Sub
                 End If
 
@@ -656,7 +869,7 @@ Module Home
                 Next
             End If
 
-            Console.WriteLine("Inbound Packet Data:")
+            ConsoleWriteColored(ConsoleColor.DarkGray, True, "Inbound Packet Data:")
             Console.WriteLine("  ____________")
             Console.WriteLine(" |\___________\   <= Received: ")
             Console.WriteLine(" |||`````````||      {0}", ipstat.ReceivedPackets.ToString)
@@ -670,14 +883,14 @@ Module Home
             Console.WriteLine()
 
         Else
-            Console.WriteLine("Your network is unavailable.")
+            MessageColored(2, True, "Your network is unavailable.")
         End If
         MainConsole()
     End Sub
 
     Sub Note() 'ByVal title As String, ByVal content As String, ByVal remindtime As Date
         'Doesn't have file-save option yet
-        Console.Write(">")
+        ConsoleWriteColored(ConsoleColor.DarkGray, False, ">")
         c = Console.ReadLine
         Select Case c
             Case "create"
@@ -689,7 +902,7 @@ Module Home
                 Dim dateformat As Date
                 Dim datetimediff As Long
                 Dim keyinput As ConsoleKeyInfo
-                Console.Write("Reminder, event or note? [R/E/N]")
+                MessageColored(3, True, "Reminder, event or note? [R/E/N]")
                 keyinput = Console.ReadKey
                 Select Case keyinput.Key
                     Case ConsoleKey.R
@@ -699,47 +912,46 @@ Module Home
                     Case ConsoleKey.N
                         remindgenre = 2
                     Case Else
-                        Console.Write("Turning back to main screen...")
+                        MessageColored(3, True, "Turning back to main screen...")
                         MainConsole()
                 End Select
                 Console.WriteLine()
-                Console.WriteLine("Title: ")
+                ConsoleWriteColored(ConsoleColor.DarkGray, True, "Title: ")
                 title = Console.ReadLine
-                Console.WriteLine("Content: ")
+                ConsoleWriteColored(ConsoleColor.DarkGray, True, "Content: ")
                 content = Console.ReadLine
                 If remindgenre = 0 Or remindgenre = 1 Then
-                    Debug.Write("Reminder date--")
-                    Console.WriteLine("Date [MM/dd/yyyy]: ")
+                    ConsoleWriteColored(ConsoleColor.DarkGray, True, "Date [MM/dd/yyyy]: ")
                     While Not wellformat
                         remindtime = Console.ReadLine
                         wellformat = Date.TryParseExact(remindtime, "MM/dd/yyyy", Globalization.CultureInfo.InvariantCulture, Globalization.DateTimeStyles.None, dateformat)
                     End While
                 End If
-                Debug.Write("Reminder genre: ")
+                ConsoleWriteColored(ConsoleColor.DarkGray, True, "Reminder genre: ")
                 Debug.WriteLine(remindgenre)
                 Select Case remindgenre
                     Case 0
                         Debug.Write("Reminder result...")
                         If wellformat Then
                             datetimediff = DateDiff(DateInterval.Day, Date.Today, CDate(remindtime))
-                            Console.WriteLine("Your reminder {0} has been created, {1} days from this event", title, datetimediff)
+                            MessageColored(0, True, "Your reminder {0} has been created, {1} days from this event", title, datetimediff)
                         End If
                     Case 1
                         If wellformat Then
                             datetimediff = DateDiff(DateInterval.Day, Date.Today, CDate(remindtime))
-                            Console.WriteLine("Your event {0} has been created, {1} days from this event", title, datetimediff)
+                            MessageColored(0, True, "Your event {0} has been created, {1} days from this event", title, datetimediff)
                         End If
                     Case 2
-                        Console.WriteLine("Saved.")
+                        MessageColored(0, True, "Saved.")
                 End Select
-            Case "cancel"
+            Case "cancel", "delete"
             Case "exit"
         End Select
         MainConsole()
     End Sub
 
     Sub Open()
-        Console.Write("Folder directory/File name (except executable): {0}", currentdir)
+        ConsoleWriteColored(ConsoleColor.DarkGray, False, "Folder directory/File name (except executable): {0}", currentdir)
         Dim target As String = Console.ReadLine()
         Dim p() As Process = Process.GetProcessesByName(target)
         Dim ext As String = IO.Path.GetExtension(target)
@@ -760,11 +972,10 @@ Module Home
             ext = ".ws" Or
             ext = ".wsf" Or
             ext = ".ink" Then
-            Console.WriteLine("Cannot run. Your file is an executable or may be a shortcut link to the an executable file.")
-            Console.WriteLine("Please use run command instead.")
+            MessageColored(2, True, "Cannot run. Your file is an executable or may be a shortcut link to the an executable file. Please use run command instead.")
             MainConsole()
         Else
-            Console.WriteLine("Cannot run. Your folder directory/file location may not vaild.")
+            MessageColored(0, True, "Cannot run. Your folder directory/file location may not vaild.")
             MainConsole()
         End If
     End Sub
@@ -776,50 +987,52 @@ Module Home
     Sub Ping()
         Dim target As String
         Dim ipaddresssample As IPAddress
+        ConsoleWriteColored(ConsoleColor.DarkGray, False, "IP or URL: ")
         target = Console.ReadLine
         Dim isvalidip As Boolean = IPAddress.TryParse(target, ipaddresssample)
         Dim isvalidURL As Boolean = Uri.IsWellFormedUriString(target, UriKind.RelativeOrAbsolute)
         If isvalidip Then
             If My.Computer.Network.Ping(target) Then
-                Console.WriteLine("Server {0} pinged successfully.", target)
+                MessageColored(0, True, "Server {0} pinged successfully.", target)
             Else
-                Console.WriteLine("Server {0} ping request timed out.", target)
+                MessageColored(2, True, "Server {0} ping request timed out.", target)
             End If
         ElseIf isvalidURL Then
             If My.Computer.Network.Ping(target) Then
-                Console.WriteLine("Server {0} pinged successfully.", target)
+                MessageColored(0, True, "Server {0} pinged successfully.", target)
             Else
-                Console.WriteLine("Server {0} ping request timed out.", target)
+                MessageColored(2, True, "Server {0} ping request timed out.", target)
             End If
         ElseIf String.IsNullOrWhiteSpace(target) Then
-            Console.WriteLine("This input cannot be empty.")
+            MessageColored(2, True, "This input cannot be empty.")
         Else
-            Console.WriteLine("The address is not valid.")
+            MessageColored(2, True, "The address is not valid.")
         End If
         MainConsole()
     End Sub
 
     Sub Rename()
         Dim filetarget, rv As String
-        Console.Write("Target file: {0}", currentdir)
+        ConsoleWriteColored(ConsoleColor.DarkGray, False, "Target file: {0}", currentdir)
         filetarget = Console.ReadLine()
-        Console.Write("Rename to: ")
+        ConsoleWriteColored(ConsoleColor.DarkGray, False, "Rename to: ")
         rv = Console.ReadLine()
         If Not File.Exists(filetarget) Then
             My.Computer.FileSystem.RenameFile(currentdir + filetarget, rv)
-            Console.WriteLine("Changed file to {0}.", rv)
+            MessageColored(0, True, "Changed file to {0}.", rv)
         ElseIf filetarget = String.Empty Or rv = String.Empty Then
+            MessageColored(3, True, "Rename changes discarded.")
             MainConsole()
         Else
-            Console.WriteLine("File with name {0} already exists. Unable to rename file.", rv)
+            MessageColored(2, True, "File with name {0} already exists. Unable to rename file.", rv)
         End If
         MainConsole()
     End Sub
 
     Sub Renamedir() 'Simliar as rename(dir mode)
         Dim rv As String
-        Console.WriteLine("Target directory/folder: {0}", currentdir)
-        Console.Write("Rename to: ")
+        ConsoleWriteColored(ConsoleColor.DarkGray, True, "Target directory/folder: {0}", currentdir)
+        ConsoleWriteColored(ConsoleColor.DarkGray, False, "Rename to: ")
         rv = Console.ReadLine()
         If Not File.Exists(currentdir) Then
             My.Computer.FileSystem.RenameDirectory(currentdir, rv)
@@ -834,22 +1047,24 @@ Module Home
 
     Sub RestartApp(ByVal msg As Boolean)
         If msg = True Then
-            Console.WriteLine("You need to restart MConsole to take the effect, restart now? [Y/N]")
+            MessageColored(3, True, "You need to restart MConsole to take the effect, restart now? [Y/N]")
             Dim decide As ConsoleKeyInfo
             decide = Console.ReadKey()
             Select Case decide.Key
                 Case ConsoleKey.N
                     Console.WriteLine()
-                    Console.WriteLine("Turning back to main screen...")
+                    ConsoleWriteColored(ConsoleColor.DarkGray, False, "Turning back to main screen...")
                     MainConsole()
                     'Exit Sub
                 Case Else
+                    My.Settings.Save()
                     Threading.Thread.Sleep(2000)
                     Console.Clear()
                     Threading.Thread.Sleep(1000)
                     Main()
             End Select
         Else
+            My.Settings.Save()
             Threading.Thread.Sleep(2000)
             Console.Clear()
             Threading.Thread.Sleep(1000)
@@ -858,8 +1073,8 @@ Module Home
     End Sub
 
     Sub Run()
-        Console.WriteLine("Be aware that this action may harm your computer because not all application are safe!")
-        Console.Write("Run: ")
+        MessageColored(1, True, "Be aware that this action may harm your computer because not all application are safe!")
+        ConsoleWriteColored(ConsoleColor.DarkGray, False, "Run: ")
         Dim target As String = Console.ReadLine()
         Dim p() As Process = Process.GetProcessesByName(target)
         Dim ext As String = IO.Path.GetExtension(target)
@@ -869,13 +1084,13 @@ Module Home
         ElseIf target = String.Empty Then
             MainConsole()
         Else
-            Console.Write("Cannot run. Your folder directory/file location may not vaild.")
+            MessageColored(2, True, "Cannot run. Your folder directory/file location may not vaild.")
             MainConsole()
         End If
     End Sub
 
     Sub Systeminfo()
-        Console.WriteLine("System info")
+        MessageColored(3, True, "System info")
         Dim osname As String = My.Computer.Info.OSFullName
         Select Case True
             Case osname.Contains("XP")
@@ -946,7 +1161,8 @@ Module Home
     End Sub
 
     Sub WhereAmI()
-        Console.WriteLine("You are now in the directory/folder {0}.", currentdir)
+        ConsoleWriteColored(ConsoleColor.DarkGray, False, "You are now in the directory/folder ")
+        Console.WriteLine(currentdir)
         MainConsole()
     End Sub
 
@@ -954,7 +1170,7 @@ Module Home
         If Not String.IsNullOrWhiteSpace(My.Settings.username) Then
             Console.WriteLine(My.Settings.username)
         Else
-            Console.WriteLine("You hid your username by default. Go to the settings and change it.")
+            MessageColored(3, True, "You hid your username by default. Go to the settings and change it.")
         End If
         MainConsole()
     End Sub
