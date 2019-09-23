@@ -64,8 +64,6 @@ Module Home
                 ElseIf mode.key = ConsoleKey.s Then
                     NetworkInfo(False)
                 End If
-            Case "note"
-                Note()
             Case "open"
                 Open()
             Case "ping"
@@ -885,68 +883,6 @@ Module Home
         Else
             MessageColored(2, True, "Your network is unavailable.")
         End If
-        MainConsole()
-    End Sub
-
-    Sub Note() 'ByVal title As String, ByVal content As String, ByVal remindtime As Date
-        'Doesn't have file-save option yet
-        ConsoleWriteColored(ConsoleColor.DarkGray, False, ">")
-        c = Console.ReadLine
-        Select Case c
-            Case "create"
-                Dim remindgenre As Integer '0 = reminder, 1 = event, 2 = note
-                Dim title As String
-                Dim content As String
-                Dim remindtime As String
-                Dim wellformat As Boolean = False
-                Dim dateformat As Date
-                Dim datetimediff As Long
-                Dim keyinput As ConsoleKeyInfo
-                MessageColored(3, True, "Reminder, event or note? [R/E/N]")
-                keyinput = Console.ReadKey
-                Select Case keyinput.Key
-                    Case ConsoleKey.R
-                        remindgenre = 0
-                    Case ConsoleKey.E
-                        remindgenre = 1
-                    Case ConsoleKey.N
-                        remindgenre = 2
-                    Case Else
-                        MessageColored(3, True, "Turning back to main screen...")
-                        MainConsole()
-                End Select
-                Console.WriteLine()
-                ConsoleWriteColored(ConsoleColor.DarkGray, True, "Title: ")
-                title = Console.ReadLine
-                ConsoleWriteColored(ConsoleColor.DarkGray, True, "Content: ")
-                content = Console.ReadLine
-                If remindgenre = 0 Or remindgenre = 1 Then
-                    ConsoleWriteColored(ConsoleColor.DarkGray, True, "Date [MM/dd/yyyy]: ")
-                    While Not wellformat
-                        remindtime = Console.ReadLine
-                        wellformat = Date.TryParseExact(remindtime, "MM/dd/yyyy", Globalization.CultureInfo.InvariantCulture, Globalization.DateTimeStyles.None, dateformat)
-                    End While
-                End If
-                ConsoleWriteColored(ConsoleColor.DarkGray, True, "Reminder genre: ")
-                Debug.WriteLine(remindgenre)
-                Select Case remindgenre
-                    Case 0
-                        Debug.Write("Reminder result...")
-                        If wellformat Then
-                            datetimediff = DateDiff(DateInterval.Day, Date.Today, CDate(remindtime))
-                            MessageColored(0, True, "Your reminder {0} has been created, {1} days from this event", title, datetimediff)
-                        End If
-                    Case 1
-                        If wellformat Then
-                            datetimediff = DateDiff(DateInterval.Day, Date.Today, CDate(remindtime))
-                            MessageColored(0, True, "Your event {0} has been created, {1} days from this event", title, datetimediff)
-                        End If
-                    Case 2
-                        MessageColored(0, True, "Saved.")
-                End Select
-            Case "cancel", "delete"
-            Case "exit"
-        End Select
         MainConsole()
     End Sub
 
