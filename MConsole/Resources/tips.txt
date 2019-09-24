@@ -28,3 +28,10 @@ Type "settings" then type "user" to change current username.
 MConsole uses user name of user that currently logged in. You can change it in user settings.
 MConsole uses different greetings in different timings.
 If you want to find the content in this console, press Ctrl+F then type.
+Type "ping" to verify if computers or servers in network are discoverable and/or communicable.
+Type "network" to show all the information of network adapters you have.
+You can create text-based file in any extension format by using "makefile" command.
+MConsole enables you to change greetings in settings.
+Now you can change your theme in theme settings.
+Some users may love centered startup title in old style. MConsole can enable that in title alignment settings.
+You can change your own window title content in title settings. 

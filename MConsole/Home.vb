@@ -12,113 +12,116 @@ Module Home
             commands.RemoveAt(2)
             commands.Insert(0, c)
         End If
-        Select Case c.ToLower
-            Case "about"
-                About()
-            Case "alldrives", "alldrivesinfo", "driveinfo", "driveslist", "drivelist", "currentfs", "fs", "filesystem", "fsinfo"
-                Drivesinfo()
-            Case "applog"
-                Applog()
-            Case "calc"
-                Console.WriteLine("Calculator")
-                Calc()
-            Case "cls", "clear"
-                Console.Clear()
-                MainConsole()
-            Case "copy"
-                Copy()
-            Case "copydir"
-                Copydir()
-            Case "cv", "commandview", "history"
-                CommandView()
-            Case "changedir", "cd", "chgdir"
-                ChangeDir()
-            Case "date"
-                Datetimedisp("d")
-            Case "dir", "dirlist", "list"
-                Dir()
-            Case "drives", "drivepart", "dpart", "dp"
-                DrivePart()
-            Case "echo", "say", "shout"
-                EchoText()
-            Case "editfile", "edit"
-                EditFile()
-            Case "exit"
-                ExitMsg()
-            Case "help"
-                Info.Help()
-            Case "makefile", "create"
-                MakeFile()
-            Case "md", "makedir", "newdir"
-                Makedir()
-            Case "move"
-                Move()
-            Case "movedir"
-                Movedir()
-            Case "network"
-                Dim mode As ConsoleKeyInfo
-                MessageColored(3, False, "Detailed or summary? [d/s]")
-                mode = Console.ReadKey
-                If mode.Key = ConsoleKey.D Then
-                    NetworkInfo(True)
-                ElseIf mode.key = ConsoleKey.s Then
-                    NetworkInfo(False)
-                End If
-            Case "open"
-                Open()
-            Case "ping"
-                Ping()
-            Case "rename", "ren", "rn"
-                Rename()
-            Case "renamedir", "rendir", "rndir"
-                Renamedir()
-            Case "restart", "rs"
-                RestartApp(False)
-            Case "rnd", "random"
-                Console.WriteLine(Rnd())
-                MainConsole()
-            Case "run"
-                Run()
-            Case "set", "setting", "settings"
-                Settings(True)
-            Case "sym", "htmlsym"
-                HTMLSymbolConvert()
-            Case "sysinfo", "systeminfo"
-                Systeminfo()
-            Case "time"
-                Datetimedisp("t")
-            Case "ver", "version"
-                Ver()
-            Case "where"
-                WhereAmI()
-            Case "who"
-                WhoAmI()
-            Case Else
-                If c <> String.Empty Then
-                    'Console.WriteLine(c + synerr)
-                    MessageColored(2, True, "{0} {1}", c, synerr)
-                    Threading.Thread.Sleep(500)
-                    MainConsole()
-                Else
-                    MainConsole()
-                End If
-                Try
-                    Throw New DivideByZeroException()
-                Catch ex As Exception
-                    'If (TypeOf Err.GetException() Is DivideByZeroException) Then
-                    'Console.WriteLine("An error appeared in MConsole. Console progress is terminated. Restarting the console...")
-                    MessageColored(2, True, "An error appeared in MConsole. Console progress is terminated. Restarting the console...")
-                    Debug.Write("MConsole progress is terminated, due to entered invaild connand """)
-                    Debug.Write(c)
-                    Debug.Write(""". Now we are restarting the console... Error code: ") 'System.DivideByZeroException
-                    Debug.WriteLine(ex.Message)
-                    Threading.Thread.Sleep(2000)
+        If Not String.IsNullOrWhiteSpace(c) Then
+
+            Select Case c.ToLower
+                Case "about"
+                    About()
+                Case "alldrives", "alldrivesinfo", "driveinfo", "driveslist", "drivelist", "currentfs", "fs", "filesystem", "fsinfo"
+                    Drivesinfo()
+                Case "applog"
+                    Applog()
+                Case "calc"
+                    Console.WriteLine("Calculator")
+                    Calc()
+                Case "cls", "clear"
                     Console.Clear()
-                    Threading.Thread.Sleep(1000)
-                    Main()
-                    'End If
-                End Try
-        End Select
+                    MainConsole()
+                Case "copy"
+                    Copy()
+                Case "copydir"
+                    Copydir()
+                Case "cv", "commandview", "history"
+                    CommandView()
+                Case "changedir", "cd", "chgdir"
+                    ChangeDir()
+                Case "date"
+                    Datetimedisp("d")
+                Case "dir", "dirlist", "list"
+                    Dir()
+                Case "drives", "drivepart", "dpart", "dp"
+                    DrivePart()
+                Case "echo", "say", "shout"
+                    EchoText()
+                Case "exit"
+                    ExitMsg()
+                Case "help"
+                    Info.Help()
+                Case "makefile", "create"
+                    MakeFile()
+                Case "md", "makedir", "newdir"
+                    Makedir()
+                Case "move"
+                    Move()
+                Case "movedir"
+                    Movedir()
+                Case "network"
+                    Dim mode As ConsoleKeyInfo
+                    MessageColored(3, False, "Detailed or summary? [d/s]")
+                    mode = Console.ReadKey
+                    If mode.Key = ConsoleKey.D Then
+                        NetworkInfo(True)
+                    ElseIf mode.Key = ConsoleKey.S Then
+                        NetworkInfo(False)
+                    End If
+                Case "open"
+                    Open()
+                Case "ping"
+                    Ping()
+                Case "rename", "ren", "rn"
+                    Rename()
+                Case "renamedir", "rendir", "rndir"
+                    Renamedir()
+                Case "restart", "rs"
+                    RestartApp(False)
+                Case "rnd", "random"
+                    Console.WriteLine(Rnd())
+                    MainConsole()
+                Case "run"
+                    Run()
+                Case "set", "setting", "settings"
+                    Settings(True)
+                Case "sym", "htmlsym"
+                    HTMLSymbolConvert()
+                Case "sysinfo", "systeminfo"
+                    Systeminfo()
+                Case "time"
+                    Datetimedisp("t")
+                Case "ver", "version"
+                    Ver()
+                Case "where"
+                    WhereAmI()
+                Case "who"
+                    WhoAmI()
+                Case Else
+                    If c <> String.Empty Then
+                        'Console.WriteLine(c + synerr)
+                        MessageColored(2, True, "{0} {1}", c, synerr)
+                        Threading.Thread.Sleep(500)
+                        MainConsole()
+                    Else
+                        MainConsole()
+                    End If
+                    Try
+                        Throw New DivideByZeroException()
+                    Catch ex As Exception
+                        'If (TypeOf Err.GetException() Is DivideByZeroException) Then
+                        'Console.WriteLine("An error appeared in MConsole. Console progress is terminated. Restarting the console...")
+                        MessageColored(2, True, "An error appeared in MConsole. Console progress is terminated. Restarting the console...")
+                        Debug.Write("MConsole progress is terminated, due to entered invaild connand """)
+                        Debug.Write(c)
+                        Debug.Write(""". Now we are restarting the console... Error code: ") 'System.DivideByZeroException
+                        Debug.WriteLine(ex.Message)
+                        Threading.Thread.Sleep(2000)
+                        Console.Clear()
+                        Threading.Thread.Sleep(1000)
+                        Main()
+                        'End If
+                    End Try
+            End Select
+        Else
+            MainConsole()
+        End If
     End Sub
 
     Sub Calc()
@@ -438,85 +441,6 @@ Module Home
             MainConsole()
         Else
             MessageColored(2, True, "Directory/folder {0} exists. Unable to create.", dirname)
-        End If
-        MainConsole()
-    End Sub
-
-    'EditFile sub. Move back when finished.
-    Sub EditFile()
-        Dim filetarget As String
-        Dim content As String = Nothing
-        Dim found As Boolean = False
-        ConsoleWriteColored(ConsoleColor.DarkGray, False, "File name with extension: {0}", currentdir)
-        filetarget = Console.ReadLine()
-        If Not String.IsNullOrEmpty(filetarget) Or File.Exists(currentdir + filetarget) Then
-            found = True
-        Else
-            MessageColored(2, True, "This target filename is null or file not exist. Cannot open file.")
-        End If
-        If found Then
-            content = File.ReadAllText(currentdir + filetarget)
-
-            ConsoleWriteColored(ConsoleColor.DarkGray, True, "Content (Press Esc key to save or discard changes): ")
-
-            Dim stringList() As String = content.Split(vbCrLf)
-
-            Console.WriteLine()
-            'Console.WriteLine("Final content: ")
-            For Each line In stringList
-                Console.Write(line)
-            Next
-
-
-            Dim cki As ConsoleKeyInfo
-            Do
-                cki = Console.ReadKey(True)
-                If Char.IsLetterOrDigit(cki.KeyChar) Or Char.IsNumber(cki.KeyChar) Or Char.IsSymbol(cki.KeyChar) Or Char.IsWhiteSpace(cki.KeyChar) Then 'Or Char.IsSeparator(cki.KeyChar) Then
-
-                    'If cki.Key = ConsoleKey.Enter Then
-                    'Console.WriteLine()
-                    'End If
-                    Console.Write("{0}", cki.KeyChar)
-                    content += cki.KeyChar
-                End If
-                If cki.Key = ConsoleKey.Backspace Then
-                    If Console.CursorLeft > 0 Then
-                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop)
-                        Console.Write(" ")
-                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop)
-                        content = content.Remove(content.Length - 1, 1)
-                    Else
-                        'Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop - 1)
-                        'Console.Write(" ")
-                        Console.SetCursorPosition(Console.BufferWidth - 1, Console.CursorTop)
-                        Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop - 1)
-                        content = content.Remove(content.Length - 1, 1)
-                    End If
-                    Debug.WriteLine("Left: {0}, Top: {1}", Console.CursorLeft, Console.CursorTop)
-                End If
-            Loop While cki.Key <> ConsoleKey.Escape
-
-
-
-            MessageColored(3, False, "Save or discard changes of file {0}? [Y/N]", filetarget)
-            Dim decide As ConsoleKeyInfo
-            decide = Console.ReadKey
-            Console.WriteLine()
-            Console.WriteLine(currentdir + filetarget)
-            Select Case decide.Key
-                Case ConsoleKey.Y
-                    Try
-                            File.WriteAllText(currentdir + filetarget, content)
-                        MessageColored(0, True, "File {0} saved.", filetarget)
-                    Catch ex As Exception
-                        MessageColored(2, True, "There is something wrong about saving file, usually due to the filename error. Cannot save file.")
-                    End Try
-                Case ConsoleKey.N
-                    MessageColored(3, True, "Discarded.")
-                Case Else
-                    MessageColored(3, True, "Invalid key command. Discarded.")
-            End Select
-
         End If
         MainConsole()
     End Sub

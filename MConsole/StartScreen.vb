@@ -3,8 +3,8 @@ Imports System.Resources
 
 Module StartScreen
     Public c As String 'Command text variable
-    Public verstr As String = "0.4" 'Version
-    Public fullver As String = "0.4.20190909" 'Full version
+    Public verstr As String = "0.5" 'Version
+    Public fullver As String = "0.5.20190925" 'Full version
     Public synerr As String = "is not a command. Type help If you forget commands." 'Syntax error message
     Dim commandlist As String() = {"***", "***", "***"} 'Commands history
     Public commands As List(Of String) = New List(Of String)(commandlist)
@@ -149,13 +149,13 @@ Module StartScreen
         'My.Settings.Colorized = True
         'My.Settings.themeStatus = True
         ThemeSelector(My.Settings.selectedTheme)
-        Debug.Write("Colorized: ")
-        Debug.WriteLine(My.Settings.Colorized)
-        Debug.Write("Themed: ")
-        Debug.WriteLine(My.Settings.themeStatus)
+        'Debug.Write("Colorized: ")
+        'Debug.WriteLine(My.Settings.Colorized)
+        'Debug.Write("Themed: ")
+        'Debug.WriteLine(My.Settings.themeStatus)
 
-        Threading.Thread.Sleep(2000)
-        Console.Clear()
+        'Threading.Thread.Sleep(2000)
+        'Console.Clear()
 
         Console.Title = "Welcome To MConsole..."
         Console.Clear()
@@ -251,23 +251,7 @@ Module StartScreen
             End Select
         End If
 
-        If My.Settings.DevMode = True Then
 
-            ConsoleWriteColored(ConsoleColor.DarkGray, True, "Template:")
-            ConsoleWriteColored(ConsoleColor.Green, True, "{0} System started successfully.", ChrW(10003))
-            ConsoleWriteColored(ConsoleColor.Yellow, True, "{0} There is something wrong in the system, waiting for respond...", ChrW(9888))
-            ConsoleWriteColored(ConsoleColor.Red, True, "{0} You disabled commandview/history function, please enable it.", ChrW(10060))
-            ConsoleWriteColored(ConsoleColor.Blue, True, "{0} There is something you need to focus...", ChrW(9432))
-            ConsoleWriteColored(ConsoleColor.White, True, "{0} New functions in MConsole! Find them all if you can! Visit https://github.com/mcmartin25/MConsole to see more details.", ChrW(9733))
-
-            ConsoleWriteColored(ConsoleColor.DarkGray, True, "Message template:")
-            MessageColored(0, True, "System started successfully.")
-            MessageColored(1, True, "There is something wrong in the system, waiting for respond...")
-            MessageColored(2, True, "You disabled commandview/history function, please enable it.")
-            MessageColored(3, True, "There is something you need to focus...")
-            MessageColored(4, True, "New functions in MConsole! Find them all if you can! Visit https://github.com/mcmartin25/MConsole to see more details.")
-
-        End If
 
         Dim r As Random = New Random
         Dim FinishedList As New List(Of String)

@@ -1,4 +1,4 @@
-If you want to find the content here, press Ctrl+F then type.
+If you want to find the content in this console, press Ctrl+F then type.
 
 Command            Description
 ------------------------------
@@ -36,12 +36,14 @@ help               Display all the commands.
 history            Same as commandview.
 list               Same as dir.
 makedir            Same as md.
+makefile           Create text-based file.
 md                 Make a new directory.
 move               Move file to new directory.
+network            Show network information.
 movedir            Move directory to new directory/location.
 newdir             Same as md.
 open               Open file or folder. (This cannot run executable.)
-ren                Same as rename.
+ping               Ping server.
 rename             Rename file.
 renamedir          Rename folder.
 rendir             Same as renamedir.
