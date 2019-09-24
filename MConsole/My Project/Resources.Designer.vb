@@ -59,5 +59,21 @@ Namespace My.Resources
                 resourceCulture = value
             End Set
         End Property
+        
+        '''<summary>
+        '''  查詢類似 If you want to know more information about version and copyright, type &quot;about&quot;.
+        '''To display all the Previous and current feature changes and application logs, type &quot;applog&quot;.
+        '''If you want to display file system for each partition in your hard drive and USB flash drive, type &quot;alldrives&quot;.
+        '''To run simple calulations, type &quot;calc&quot;
+        '''Type &quot;cd&quot; to change current directory/folder.
+        '''Type &quot;cls&quot; to clear sereen.
+        '''If you want to display 3 command that recently used, type &quot;comandview&quot;.
+        '''If you want to copy your file once, [字串的其餘部分已遭截斷]&quot;; 的當地語系化字串。
+        '''</summary>
+        Friend ReadOnly Property tips() As String
+            Get
+                Return ResourceManager.GetString("tips", resourceCulture)
+            End Get
+        End Property
     End Module
 End Namespace

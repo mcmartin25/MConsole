@@ -1,9 +1,9 @@
 ﻿Module Info
     Sub Help()
-        Console.WriteLine("If you want to find the content in this console, press Ctrl+F then type.")
+        ConsoleWriteColored(ConsoleColor.DarkGray, True, "If you want to find the content in this console, press Ctrl+F then type.")
         Console.WriteLine()
-        Console.WriteLine("Command            Description")
-        Console.WriteLine("------------------------------")
+        ConsoleWriteColored(ConsoleColor.DarkGray, True, "Command            Description")
+        ConsoleWriteColored(ConsoleColor.DarkGray, True, "------------------------------")
         Console.WriteLine("about              Display MConsole info.")
         Console.WriteLine("alldrives          Display file system for each partition.")
         Console.WriteLine("alldrivesinfo      Same as alldrives.")
@@ -38,11 +38,14 @@
         Console.WriteLine("history            Same as commandview.")
         Console.WriteLine("list               Same as dir.")
         Console.WriteLine("makedir            Same as md.")
+        Console.WriteLine("makefile           Create text-based file.")
         Console.WriteLine("md                 Make a new directory.")
         Console.WriteLine("move               Move file to new directory.")
+        Console.WriteLine("network            Show network information.")
         Console.WriteLine("movedir            Move directory to new directory/location.")
         Console.WriteLine("newdir             Same as md.")
         Console.WriteLine("open               Open file or folder. (This cannot run executable.)")
+        Console.WriteLine("ping               Ping server.")
         Console.WriteLine("rename             Rename file.")
         Console.WriteLine("renamedir          Rename folder.")
         Console.WriteLine("rendir             Same as renamedir.")
@@ -64,24 +67,43 @@
         Console.WriteLine("where              Show current directory location.")
         Console.WriteLine("who                Show your current username value.")
         MainConsole()
+        'ping, network, makefile
     End Sub
     Sub About()
-        Console.WriteLine("MConsole v.{0} Pre-alpha", verstr)
-        Console.WriteLine("MConsole Pre-Alpha Version {0}", fullver)
-        Console.WriteLine("Copyright (c) 2018-2019 Martin C. All rights reserved." + vbCrLf + " ")
-        Console.WriteLine("Type applog command to see its features and logs.")
-        Threading.Thread.Sleep(500)
+        Console.Clear()
+
+
+        If My.Settings.centeredTitle Then
+
+            For Each i As String In iconStrings
+                CenterWriteColored(ConsoleColor.Blue, True, True, i)
+            Next
+            CenterWriteColored(ConsoleColor.DarkGray, True, True, "MConsole v.{0} Pre-alpha", verstr)
+            CenterWriteColored(ConsoleColor.DarkGray, True, True, "MConsole Pre-Alpha Version {0}", fullver)
+            CenterWriteColored(ConsoleColor.DarkGray, True, True, "Copyright (c) 2018-2019 Martin C. All rights reserved.")
+            CenterWriteColored(ConsoleColor.DarkGray, True, True, "Type applog command to see its features and logs.")
+        Else
+            For Each i As String In iconStrings
+                ConsoleWriteColored(ConsoleColor.Blue, True, i)
+            Next
+            ConsoleWriteColored(ConsoleColor.DarkGray, True, "MConsole v.{0} Pre-alpha", verstr)
+            ConsoleWriteColored(ConsoleColor.DarkGray, True, "MConsole Pre-Alpha Version {0}", fullver)
+            ConsoleWriteColored(ConsoleColor.DarkGray, True, "Copyright (c) 2018-2019 Martin C. All rights reserved.")
+            ConsoleWriteColored(ConsoleColor.DarkGray, True, "Type applog command to see its features and logs.")
+        End If
+        Console.ReadKey()
+        'Threading.Thread.Sleep(500)
+        Console.Clear()
         MainConsole()
     End Sub
     Sub Applog()
-        Console.WriteLine("Features")
-        Console.WriteLine("* Optimized code")
-        Console.WriteLine("* Add command: clear, open, run, commandview, cv, history")
-        Console.WriteLine("* Fix unable to input command when uppercase")
-        Console.WriteLine("* Add main app folder location(for development purpose)")
-        Console.WriteLine("* Fix unable to input command when uppercase text included")
-        Console.WriteLine("-----")
-        Console.WriteLine("Applog")
+        ConsoleWriteColored(ConsoleColor.DarkGray, True, "Features")
+        Console.WriteLine("* Change encode settings to UTF-8")
+        Console.WriteLine("* Add command: ping, network, makefile")
+        Console.WriteLine("* Add theme, title alignment, greetings and encode settings")
+        Console.WriteLine("* Optimized exit and restart message, about screen, Tips, welcome text")
+        ConsoleWriteColored(ConsoleColor.DarkGray, True, "-----")
+        ConsoleWriteColored(ConsoleColor.DarkGray, True, "Applog")
         Console.WriteLine("Version 0.1.20180120")
         Console.WriteLine("* First version of MConsole")
         Console.WriteLine("Version 0.1.20180121")
@@ -158,6 +180,15 @@
         Console.WriteLine("* Optimized: Settings")
         Console.WriteLine("* Optimized code")
         Console.WriteLine("* content-changing And bug-fixes")
+        Console.WriteLine("Version 0.5.20190925")
+        Console.WriteLine("* Colorized UI")
+        Console.WriteLine("* Change encode settings to UTF-8")
+        Console.WriteLine("* Add command: ping, network, makefile")
+        Console.WriteLine("* Add theme, title alignment, greetings and encode settings")
+        Console.WriteLine("* Optimized exit and restart message, about screen, Tips, welcome text")
+        Console.WriteLine("* Content-changing and bug-fixes")
+        '...
+        'Console.WriteLine("* ")
         'Console.WriteLine("-----")
         'Console.WriteLine("Type issuelist to see all the known issues by last build.")
         'Console.WriteLine("-----")
@@ -172,14 +203,15 @@
 
     Sub CommandView()
         If My.Settings.recCommand = True Then
-            Console.WriteLine("For security reasons, olny the newest 3 commands (sub-commands included) will be list here.")
+            ConsoleWriteColored(ConsoleColor.DarkGray, True, "For security reasons, only the newest 3 commands (sub-commands included) will be list here.")
             Console.WriteLine("")
             For Each item In commands
                 Console.WriteLine(item)
             Next
             MainConsole()
         Else
-            Console.WriteLine("You disabled commandview/history function, please enable it.")
+            'Console.WriteLine("You disabled commandview/history function, please enable it.")
+            MessageColored(2, True, "You disabled commandview/history function, please enable it.")
             MainConsole()
         End If
     End Sub

@@ -7,5 +7,8 @@ Namespace My
     ' 在載入設定值之後引發 SettingsLoaded 事件。
     ' 在儲存設定值之前引發 SettingsSaving 事件。
     Partial Friend NotInheritable Class MySettings
+        Friend Function GetPreviousVersion() As String
+            Throw New NotImplementedException()
+        End Function
     End Class
 End Namespace

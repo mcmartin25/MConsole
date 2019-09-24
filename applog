@@ -1,9 +1,8 @@
 Features
-* Optimized code
-* Add command: clear, open, run, commandview, cv, history
-* Fix unable to input command when uppercase
-* Add main app folder location(for development purpose)
-* Fix unable to input command when uppercase text included
+* Change encode settings to UTF-8
+* Add command: ping, network, makefile
+* Add theme, title alignment, greetings and encode settings
+* Optimized exit and restart message, about screen, Tips, welcome text
 -----
 Applog
 Version 0.1.20180120
@@ -35,7 +34,7 @@ Version 0.1.20180313.2(20180325)
 * Code-correcting
 Version 0.2.20180325
 * Customized Start Screen
-* Change display method of ''Known Issues by last build'' from list to table
+* Change display method of "Known Issues by last build" from list to table
 * All the known issues list by last build are splitted from applog to issuelist.
 * Code-correcting
 * Content-correcting
@@ -79,9 +78,13 @@ Version 0.4.20190812
 Version 0.4.20190818
 * Add username function
 * Add who command
-* Optimized: settings
+* Optimized: Settings
 * Optimized code
-* content-changing and bug-fixes
------
-Type issuelist to see all the known issues by last build. (If provided)
------
+* content-changing And bug-fixes
+Version 0.5.20190925
+* Colorized UI
+* Change encode settings to UTF-8
+* Add command: ping, network, makefile
+* Add theme, title alignment, greetings and encode settings
+* Optimized exit and restart message, about screen, Tips, welcome text
+* Content-changing and bug-fixes
